@@ -25,7 +25,7 @@ void AXhWidgetActor::Init()
 			if (UXhUserWidget* XhWidget = Cast<UXhUserWidget>(Temp->GetUserWidgetObject()))
 			{
 				XhWidget->XhWidgetActor = this;
-				XhWidget->Init();
+				XhWidget->NativeInit();
 			}
 		}
 	}

@@ -216,3 +216,19 @@ USaveGame* UXhTool::LoadDataFromArbitraryPath(const FString& LoadPath, const FSt
 	return nullptr;
 }
 
+void UXhTool::GetTipArrowDegree(const FTransform& SourceTransform, const FVector& TargetLocation, float& Degree, float& YDegree)
+{
+	FVector DirectionNormal = (TargetLocation - SourceTransform.GetLocation()).GetSafeNormal();
+	FVector RightNormal = SourceTransform.GetUnitAxis(EAxis::Y);
+	FVector UpNormal = SourceTransform.GetUnitAxis(EAxis::Z);
+	double YDot = DirectionNormal.Dot(RightNormal);
+	double ZDot = DirectionNormal.Dot(UpNormal);
+	YDegree = (180.0) / UE_DOUBLE_PI * FMath::Acos(YDot);
+	Degree = (180.0) / UE_DOUBLE_PI * FMath::Atan(YDot / ZDot);
+}
+
+bool UXhTool::StringSetIsEqual(const TSet<FString>& Set1, const TSet<FString>& Set2)
+{
+	return Set1.CreateConstIterator() == Set2.CreateConstIterator();
+}
+

@@ -21,9 +21,14 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Xh")
 	AXhWidgetActor* XhWidgetActor;
 
-	void Init();
+	void NativeInit();
+
+	void XhButtonInit(UXhButton* XhButton);
+
 	UFUNCTION()
 	void XhUpdateClickTime(const FString& ButtonID, UXhButton* Button);//UPARAM(ref) 
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "AddDynamicXhButton", DisplayName = "AddDynamicXhButton"))
+	void AddDynamicXhButton(const TArray<UXhButton*> DynamicButtons);
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;

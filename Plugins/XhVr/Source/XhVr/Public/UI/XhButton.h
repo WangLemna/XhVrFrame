@@ -156,6 +156,8 @@ public:
 	 */
 	/*UFUNCTION(BlueprintCallable, Category = "Widget|Panel")
 	UPanelSlot* AddChild(UWidget* Content);*/
+
+
 public:
 
 	//~ Begin UWidget Interface
@@ -207,6 +209,7 @@ protected:
 public:
 	float LastClickTime;
 	bool bIsUpdateTime;
+
 protected:
 	/** Cached pointer to the underlying slate button owned by this UWidget */
 	TSharedPtr<SButton> MyButton;

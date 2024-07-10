@@ -61,6 +61,7 @@ class XHVR_API UXhTool : public UBlueprintFunctionLibrary
 	GENERATED_UCLASS_BODY()
 
 public:
+#pragma region Tool
 	/*ToolBegin*/
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "OpenOther"), Category = "XhTool|Tool")
 	static void OpenFile(const FString& FileName, const FString& Parms = "");
@@ -77,8 +78,9 @@ public:
 	UFUNCTION(BlueprintPure, meta = (Keywords = "GetMD5"), Category = "XhTool|Tool")
 	static FString GetMD5(const FString& str);
 	/*`ToolEnd*/
+#pragma endregion
 
-
+#pragma region File
 	/*FlieBegin*/
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "DeleteFile"), Category = "XhTool|File")
 	static bool DeleteFile(const FString& Filename, bool RequireExists = false, bool EvenReadOnly = false, bool Quiet = false);
@@ -118,8 +120,10 @@ public:
 
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "WriteStringArrayFile"), Category = "XhTool|File")
 	static bool WriteStringArray(const TArray<FString>& ContentStr, const FString& FilePath, FileWrite Type = FileWrite::FILEWRITE_Append);
-	/*~FileEnd*/
+	/*FileEnd*/
+#pragma endregion
 
+#pragma region UE_SaveGame
 	/*UnrealEngine SaveGame Begin*/
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "SaveDataToArbitraryPath"), Category = "XhTool|SaveGame")
 	static bool SaveDataToArbitraryPath(USaveGame* SaveGameObject, const FString& SavePath, const FString& Extension = "pak");
@@ -127,6 +131,15 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "LoadDataFromArbitraryPath"), Category = "XhTool|SaveGame")
 	static USaveGame* LoadDataFromArbitraryPath(const FString& LoadPath, const FString& Extension = "pak");
 	/*`UnrealEngine SaveGame End*/
+#pragma endregion
+
+#pragma region XhMath
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "GetArrowDirection"), Category = "XhTool|XhMath")
+	static void GetTipArrowDegree(const FTransform & SourceTransform, const FVector& TargetLocation, float& Degree, float& YDegree);
+
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "StringSetIsEqual"), Category = "XhTool|XhMath")
+	static bool StringSetIsEqual(const TSet<FString>& Set1, const TSet<FString>& Set2);
+#pragma endregion
 
 };
 

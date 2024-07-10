@@ -316,6 +316,7 @@ TSharedPtr<SWidget> UXhButton::GetAccessibleWidget() const
 {
 	return MyButton;
 }
+
 #endif
 
 #if WITH_EDITOR
