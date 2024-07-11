@@ -120,9 +120,9 @@ void AXhCharacter::InitLog()
 		}
 		else
 		{
-			if (FPaths::DirectoryExists(XhLogPath + LogFileName + ".log"))
+			if (FPaths::FileExists(XhLogPath + LogFileName + ".log"))
 			{
-				if (FPaths::DirectoryExists(XhLogPath + LogFileName + "_2.log"))
+				if (FPaths::FileExists(XhLogPath + LogFileName + "_2.log"))
 				{
 					FString FilePath = XhLogPath + LogFileName + "_2.log";
 					FString XhDateString = FDateTime::Now().ToString(TEXT("%Y.%m.%d-%H.%M.%S"));

@@ -3,10 +3,10 @@
 #pragma once
 
 #include "Kismet/BlueprintFunctionLibrary.h"
-
 #include "Type/XhType.h"
-
 #include "XhTool.generated.h"
+
+class UXhVrSettings;
 
 /* 
 *	Function library class.
@@ -59,7 +59,8 @@ UCLASS()
 class XHVR_API UXhTool : public UBlueprintFunctionLibrary
 {
 	GENERATED_UCLASS_BODY()
-
+	static UXhVrSettings* XhVrSettings;
+	static UXhVrSettings* GetVrSettings();
 public:
 #pragma region Tool
 	/*ToolBegin*/
@@ -134,13 +135,14 @@ public:
 #pragma endregion
 
 #pragma region XhMath
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "GetArrowDirection"), Category = "XhTool|XhMath")
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "GetArrowDirection"), Category = "XhTool|XhMath")
 	static void GetTipArrowDegree(const FTransform & SourceTransform, const FVector& TargetLocation, float& Degree, float& YDegree);
 
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "StringSetIsEqual"), Category = "XhTool|XhMath")
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "StringSetIsEqual"), Category = "XhTool|XhMath")
 	static bool StringSetIsEqual(const TSet<FString>& Set1, const TSet<FString>& Set2);
 #pragma endregion
-
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "WriteLog", WorldContext = "WorldContextObject"), Category = "XhTool|XhLog")
+	static void WriteLog(const UObject* WorldContextObject, const FString& InStringLog, bool bScreen = true);
 };
 
 

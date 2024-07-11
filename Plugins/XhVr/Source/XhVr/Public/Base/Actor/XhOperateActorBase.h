@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Type/XhCore.h"
 #include "XhOperateActorBase.generated.h"
 
 UCLASS()

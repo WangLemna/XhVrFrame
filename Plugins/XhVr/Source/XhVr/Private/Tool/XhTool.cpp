@@ -7,6 +7,7 @@
 #include "Runtime/Core/Public/Misc/FileHelper.h"
 #include "Runtime/Core/Public/HAL/FileManager.h"
 #include "Kismet/GameplayStatics.h"
+#include "Settings/XhVrSettings.h"
 #if PLATFORM_WINDOWS
 #include "Windows/AllowWindowsPlatformTypes.h"
 #include "Windows/PreWindowsApi.h"
@@ -15,10 +16,23 @@
 #include "Windows/PostWindowsApi.h"
 #include "Windows/HideWindowsPlatformTypes.h"
 #endif
+//#include "../../../../../../../Source/Runtime/Engine/Classes/Engine/Engine.h"
+
+UXhVrSettings* UXhTool::XhVrSettings;
 UXhTool::UXhTool(const FObjectInitializer& ObjectInitializer)
 : Super(ObjectInitializer)
 {
 
+}
+
+UXhVrSettings* UXhTool::GetVrSettings()
+{
+	if (!XhVrSettings)
+	{
+		XhVrSettings = GetMutableDefault<UXhVrSettings>();
+	}
+	return XhVrSettings;
+	//return GetMutableDefault<UXhVrSettings>();
 }
 
 void UXhTool::OpenFile(const FString& FileName, const FString& Parms /*= ""*/)
@@ -231,4 +245,35 @@ bool UXhTool::StringSetIsEqual(const TSet<FString>& Set1, const TSet<FString>& S
 {
 	return Set1.CreateConstIterator() == Set2.CreateConstIterator();
 }
+
+void UXhTool::WriteLog(const UObject* WorldContextObject, const FString& InStringLog, bool bScreen /*= true*/)
+{
+	/*GetVrSettings()*/
+
+	FString Prefix;
+	//DataTime.ToString(TEXT("%Y/%m/%d %H:%M:%S:%s"));//[2024/03/26 16:52:45:587]
+	Prefix += "[" + FDateTime::Now().ToString(TEXT("%Y/%m/%d %H:%M:%S:%s")) + "]";
+	if (WorldContextObject)
+	{
+		Prefix += "[" + WorldContextObject->GetFName().ToString() + "] ";
+	}
+
+#if DO_BLUEPRINT_GUARD
+	if (!FBlueprintContextTracker::Get().GetCurrentScriptStack().IsEmpty())
+	{
+		const TArrayView<const FFrame* const> ScriptStack = FBlueprintContextTracker::Get().GetCurrentScriptStack();
+		Prefix += ScriptStack.Last()->Node->GetName() + ":";
+	}
+#endif
+
+	FString StringLog = Prefix + InStringLog;
+	FString FilePath = GetVrSettings()->LogPath + GetVrSettings()->LogFileName + ".log";
+	FFileHelper::SaveStringToFile(StringLog + "\r\n", *FilePath, FFileHelper::EEncodingOptions::AutoDetect, &IFileManager::Get(), EFileWrite::FILEWRITE_Append);
+	if (bScreen)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s"), *StringLog);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, StringLog);
+	}
+}
+
 

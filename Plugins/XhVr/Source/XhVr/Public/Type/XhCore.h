@@ -4,3 +4,4 @@
 
 #include "XhType.h"
 #include "XhDefine.h"
+#include "Tool/XhTool.h"
