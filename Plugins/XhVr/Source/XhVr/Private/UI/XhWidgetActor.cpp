@@ -31,6 +31,11 @@ void AXhWidgetActor::Init()
 	}
 }
 
+void AXhWidgetActor::XhConstruct()
+{
+	XhConstruct_BP();
+}
+
 // Called when the game starts or when spawned
 void AXhWidgetActor::BeginPlay()
 {

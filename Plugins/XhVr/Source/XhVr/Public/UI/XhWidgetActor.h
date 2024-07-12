@@ -17,7 +17,7 @@ public:
 	AXhWidgetActor();
 
 	void Init();
-
+	void XhConstruct();
 public:
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, meta = (Keywords = "XhClick", DisplayName = "XhClick"))//BlueprintNativeEvent
 	void XhClicked(const FString& ButtonID, UXhButton* Button);//UPARAM(ref)
@@ -39,6 +39,8 @@ protected:
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintImplementableEvent)
 	void XhBegin();
+	UFUNCTION(BlueprintImplementableEvent)
+	void XhConstruct_BP();
 
 public:	
 	// Called every frame

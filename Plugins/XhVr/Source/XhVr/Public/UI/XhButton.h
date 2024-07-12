@@ -10,7 +10,7 @@
 #include "Styling/SlateTypes.h"
 #include "Widgets/SWidget.h"
 
-#include "Type/XhType.h"
+#include "Type/XhCore.h"
 #include "XhButton.generated.h"
 
 class SButton;

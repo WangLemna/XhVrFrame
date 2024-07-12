@@ -10,8 +10,9 @@ void UXhUserWidget::NativeInit()
 {
 	UPanelWidget* RootPanel = Cast<UPanelWidget>(GetRootWidget());
 	//ButtonChildren.Empty();
-	GetAllXhButton(RootPanel, ButtonChildren);
-	for (UXhButton* XhButton : ButtonChildren)
+	TArray<UXhButton*> Buttons;
+	GetAllXhButton(RootPanel, Buttons);
+	for (UXhButton* XhButton : Buttons)
 	{
 		XhButtonInit(XhButton);
 	}
@@ -19,6 +20,7 @@ void UXhUserWidget::NativeInit()
 
 void UXhUserWidget::XhButtonInit(UXhButton* XhButton)
 {
+	ButtonChildren.AddUnique(XhButton);
 	if (XhButton->bIsAutoBind)
 	{
 		XhButton->OnXhClicked.AddDynamic(XhWidgetActor, &AXhWidgetActor::XhClicked);
@@ -53,8 +55,14 @@ void UXhUserWidget::AddDynamicXhButton(const TArray<UXhButton*> DynamicButtons)
 {
 	for (UXhButton* XhButton : DynamicButtons)
 	{
+		//ButtonChildren.AddUnique(XhButton);
 		XhButtonInit(XhButton);
 	}
+}
+
+void UXhUserWidget::NativeOnInitialized()
+{
+	Super::NativeOnInitialized();
 }
 
 void UXhUserWidget::NativeConstruct()

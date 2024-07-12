@@ -24,11 +24,20 @@ void AXhAnswerSystemBase::BeginPlay()
 
 void AXhAnswerSystemBase::NextQuestion_Implementation()
 {
-	if (QuestionLib.IsValidIndex(QuestionIndex))
+	if (QuestionLibs.IsValidIndex(QuestionIndex))
 	{
 		if (AnswerActor)
 		{
-			GetWorld()->SpawnActor<AXhAnswerBase>();
+			FActorSpawnParameters SpawnParameters = FActorSpawnParameters();
+			SpawnParameters.CustomPreSpawnInitalization = 
+				[&](AActor* InActor)
+				{
+					AXhAnswerBase* XhAnswerBase = Cast<AXhAnswerBase>(InActor);
+					XhAnswerBase->QuestionLib = QuestionLibs[QuestionIndex];
+					XhAnswerBase->XhAnswerSystemBase = this;
+					XhAnswerBase->XhConstruct();
+				};
+			GetWorld()->SpawnActor<AXhAnswerBase>(AXhAnswerBase::StaticClass(), AnswerActorTransform, SpawnParameters);
 			QuestionIndex++;
 		}
 		else
@@ -44,24 +53,24 @@ void AXhAnswerSystemBase::NextQuestion_Implementation()
 
 bool AXhAnswerSystemBase::InitData()
 {
-	int32 Length = QuestionLib.Num();
+	int32 Length = QuestionLibs.Num();
 	for (int32 i = 0; i < Length; i++)
 	{
 		TSet<FString> BtnIDs;
-		for (auto& Btn : QuestionLib[i].Buttons)
+		for (auto& Btn : QuestionLibs[i].Buttons)
 		{
 			BtnIDs.Add(Btn.ButtonID);
 		}
-		if (!BtnIDs.Includes(QuestionLib[i].Answer.XhSet))
+		if (!BtnIDs.Includes(QuestionLibs[i].Answer.XhSet))
 		{
-			FString XhLog = FString::Printf(TEXT("InitData:'%s'的答案与选项不符！"), *QuestionLib[i].Question.Content.ToString());
+			FString XhLog = FString::Printf(TEXT("InitData:'%s'的答案与选项不符！"), *QuestionLibs[i].Question.Content.ToString());
 			UXhTool::WriteLog(this, XhLog);
 			Answers.Empty();
 			return false;
 		}
 		else
 		{
-			Answers.Add(i, QuestionLib[i].Answer);
+			Answers.Add(i, QuestionLibs[i].Answer);
 		}
 	}
 	return true && Length > 0;

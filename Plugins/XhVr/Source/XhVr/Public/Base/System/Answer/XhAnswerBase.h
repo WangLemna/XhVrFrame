@@ -4,22 +4,56 @@
 
 #include "CoreMinimal.h"
 #include "UI/XhWidgetActor.h"
-#include "Type/XhCore.h"
 #include "Base/System/XhAnswerSystemBase.h"
 #include "XhAnswerBase.generated.h"
+
+class UWidgetComponent;
+class UUI_XhAnswerBase;
 UCLASS()
 class XHVR_API AXhAnswerBase : public AXhWidgetActor
 {
 	GENERATED_BODY()
 
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|BlueprintChange", meta = (ExposeOnSpawn = "true"))
-	FQuesionLib QuestionLib;
 
+	UPROPERTY(Category = "XhAnswerBase", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<USceneComponent> XhRoot;
+	UPROPERTY(Category = "XhAnswerBase", VisibleAnywhere, BlueprintReadOnly, meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UWidgetComponent> AnswerWidget;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|BlueprintGet", meta = (ExposeOnSpawn = "true"))
+	FQuesionLib QuestionLib;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|BlueprintGet", meta = (ExposeOnSpawn = "true"))
+	AXhAnswerSystemBase* XhAnswerSystemBase;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|BlueprintGet")
+	UUI_XhAnswerBase* UI_XhAnswerBase;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings")
+	FTextContent GameTitle;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings")
+	FSlateBrush ClickBefore;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings")
+	FSlateBrush ClickAfter;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings")
+	TSubclassOf<UUI_XhAnswerBase> UI_XhAnswer;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings|Tip")
+	bool bSpawnTip;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings|Tip")
+	TSubclassOf<AActor> TipClass;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings|Tip")
+	FTransform TipTransform;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings|Tip")
+	float TipDuringTime;
 public:
 	// Sets default values for this actor's properties
 	AXhAnswerBase();
-	//AXhAnswerBase(FQuesionLib QuestionLib);
+	UFUNCTION(BlueprintNativeEvent)
+	void XhInitialize();
+	void XhConstruct();
+	/*UFUNCTION(BlueprintImplementableEvent)
+	void XhBegin();*/
 
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 };
 

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
+#include "XhType.generated.h"
 #pragma region XhButton
 /*间隔模式*/
 UENUM(BlueprintType)
@@ -81,3 +81,61 @@ enum class EXhTraceMode : uint8
 	Widget UMETA(DisplayName = "UI射线"),
 };
 
+
+
+UENUM(BlueprintType)
+enum class EQuestionType : uint8
+{
+	Multi UMETA(DisplayName = "多选"),
+	One UMETA(DisplayName = "单选"),
+};
+
+USTRUCT(BlueprintType)
+struct FTextContent
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MultiLine = "true"))
+	FText Content;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	int32 FontSize;
+	FTextContent()
+		:Content(FText::FromString(TEXT_EMPTY))
+		,FontSize(24)
+	{
+	}
+	FTextContent(FText InContent, int32 InFontSize)
+		:Content(InContent)
+		,FontSize(InFontSize)
+	{
+	}
+};
+
+USTRUCT(BlueprintType)
+struct FXhSet
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TSet<FString> XhSet;
+};
+
+USTRUCT(BlueprintType)
+struct FButtonContent
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FTextContent Content;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString ButtonID;
+	FButtonContent()
+	{}
+	FButtonContent(FTextContent InContent, FString InButtonID)
+		:Content(InContent)
+		,ButtonID(InButtonID)
+	{
+
+	}
+};

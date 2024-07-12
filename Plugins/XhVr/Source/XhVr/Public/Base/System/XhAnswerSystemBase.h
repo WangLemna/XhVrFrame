@@ -5,52 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "UI/XhButton.h"
+#include "Type/XhCore.h"
 #include "Base/Actor/XhDataActorBase.h"
 #include "XhAnswerSystemBase.generated.h"
 
 class AXhAnswerBase;
-
-UENUM(BlueprintType)
-enum class EQuestionType : uint8
-{
-	Multi UMETA(DisplayName = "多选"),
-	One UMETA(DisplayName = "单选"),
-};
-
-USTRUCT(BlueprintType)
-struct FTextContent
-{
-	GENERATED_USTRUCT_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (MultiLine = "true"))
-	FText Content;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	int32 FontSize;
-	FTextContent()
-		:FontSize(24)
-	{
-	}
-};
-
-USTRUCT(BlueprintType)
-struct FXhSet
-{
-	GENERATED_USTRUCT_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSet<FString> XhSet;
-};
-
-USTRUCT(BlueprintType)
-struct FButtonContent
-{
-	GENERATED_USTRUCT_BODY()
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FTextContent Content;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FString ButtonID;
-};
 
 USTRUCT(BlueprintType)
 struct FQuesionLib
@@ -69,6 +28,7 @@ struct FQuesionLib
 	AXhDataActorBase* ExtraData;
 	FQuesionLib()
 		:QuestionType(EQuestionType::One)
+		,ExtraData(nullptr)
 	{
 	}
 };
@@ -84,7 +44,7 @@ public:
 
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "XhVar|Settings")
-	TArray<FQuesionLib> QuestionLib;
+	TArray<FQuesionLib> QuestionLibs;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings")
 	TSubclassOf<AXhAnswerBase> AnswerActor;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings")
