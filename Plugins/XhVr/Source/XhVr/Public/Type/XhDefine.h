@@ -1,11 +1,11 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
-//#define XH_DELAY_MACRO_COMBINE_INTER(A,B,C) A##B##C
-//#define XH_DELAY_MACRO_COMBINE(A,B,C) XH_DELAY_MACRO_COMBINE_INTER(A,B,C)
-#define XH_DELAY_MACRO_COMBINE(A,B) A##B
-#define TIMERHANDEL_VAR(A) XH_DELAY_MACRO_COMBINE(XhTH_,A)
-#define AUTO_VAR(A) XH_DELAY_MACRO_COMBINE(XhAuto_,A)
+#define XH_MACRO_COMBINE2(A, B) A##B
+#define XH_MACRO_COMBINE3(A, B, C) A##B##C
+#define XH_MACRO_COMBINE4(A, B, C, D) A##B##C##D
+#define TIMERHANDEL_VAR(A) XH_MACRO_COMBINE2(XhTH_,A)
+#define AUTO_VAR(A) XH_MACRO_COMBINE2(XhAuto_,A)
 #define XH_DELAY_B(Var) FTimerHandle TIMERHANDEL_VAR(Var);\
 	auto AUTO_VAR(Var) = [&] {\
 	if (TIMERHANDEL_VAR(Var).IsValid())\
@@ -16,6 +16,17 @@
 #define XH_DELAY_E(Var,DelayTime) };\
 GetWorld()->GetTimerManager().SetTimer(TIMERHANDEL_VAR(Var), AUTO_VAR(Var), DelayTime, false);
 
+#define XH_BP_EXEC_VAR(A) XH_MACRO_COMBINE2(A, Order)
+#define XH_BP_EXEC_B(FuncName) XH_BP_EXEC_VAR(FuncName)++;
+
+#define XH_BP_EXEC_E(FuncName) if (XH_BP_EXEC_VAR(FuncName) > 0)\
+	{\
+		XH_BP_EXEC_VAR(FuncName)--;\
+	}\
+	else\
+	{\
+		FuncName();\
+	}
 
 #if 0
 //UKismetSystemLibrary::Delay(GetWorld(), FadeInDuration, FLatentActionInfo());

@@ -32,7 +32,10 @@ public:
 	void XhDisableTrace();
 	UFUNCTION(BlueprintCallable)
 	void XhSetTraceMode(EXhTraceMode InTraceMode);
-
+	UFUNCTION(BlueprintCallable)
+	void XhClickStarted();
+	UFUNCTION(BlueprintCallable)
+	void XhClickCompleted();
 	//∑¢…‰…‰œﬂ
 	UFUNCTION(BlueprintNativeEvent)
 	void XhSendTrace();

@@ -24,8 +24,8 @@ public:
 	FQuesionLib QuestionLib;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|BlueprintGet", meta = (ExposeOnSpawn = "true"))
 	AXhAnswerSystemBase* XhAnswerSystemBase;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|BlueprintGet")
-	UUI_XhAnswerBase* UI_XhAnswerBase;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|BlueprintGet")
+	//UUI_XhAnswerBase* UI_XhAnswerBase;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings")
 	FTextContent GameTitle;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings")
@@ -33,8 +33,6 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings")
 	FSlateBrush ClickAfter;
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings")
-	TSubclassOf<UUI_XhAnswerBase> UI_XhAnswer;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings|Tip")
 	bool bSpawnTip;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings|Tip")
@@ -43,15 +41,19 @@ public:
 	FTransform TipTransform;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings|Tip")
 	float TipDuringTime;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|BlueprintChange")
+	FXhSet SelectSet;
 public:
 	// Sets default values for this actor's properties
 	AXhAnswerBase();
+	void XhRegisterComplete();
+	UFUNCTION(BlueprintCallable)//BlueprintNativeEvent
+	void XhNativeClicked(const FString& ButtonID, UXhButton* Button, const FString& SubmitBtnID);
 	UFUNCTION(BlueprintNativeEvent)
-	void XhInitialize();
-	void XhConstruct();
-	/*UFUNCTION(BlueprintImplementableEvent)
-	void XhBegin();*/
-
+	void CreateTip();
+	UFUNCTION(BlueprintNativeEvent)
+	void CreateNextQuestion();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

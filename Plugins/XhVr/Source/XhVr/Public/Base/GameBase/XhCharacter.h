@@ -80,6 +80,10 @@ public:
 
 	UFUNCTION(BlueprintCallable)
 	void XhChangeTraceCompActors(const TArray<AActor*>& InTraceIgnoreActors, bool bAdd = true);
+	UFUNCTION(BlueprintCallable)
+	void XhClickStarted();
+	UFUNCTION(BlueprintCallable)
+	void XhClickCompleted();
 
 public:
 	UXhVrSettings* XhVrSettings;

@@ -40,6 +40,8 @@ public:
 	void XhSetTraceMode(EXhTraceMode InTraceMode);
 	void XhRegisterTraceActor();
 	void XhChangeActors(const TArray<AActor*>& TraceIgnoreActors, bool bAdd = true);
+	void XhClickStarted();
+	void XhClickCompleted();
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

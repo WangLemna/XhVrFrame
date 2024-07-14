@@ -369,6 +369,30 @@ void AXhCharacter::XhChangeTraceCompActors(const TArray<AActor*>& InTraceIgnoreA
 	}
 }
 
+void AXhCharacter::XhClickStarted()
+{
+	if (TraceChild)
+	{
+		AXhTraceActorBase* TraceActor = Cast<AXhTraceActorBase>(TraceChild->GetChildActor());
+		if (TraceActor)
+		{
+			TraceActor->XhClickStarted();
+		}
+	}
+}
+
+void AXhCharacter::XhClickCompleted()
+{
+	if (TraceChild)
+	{
+		AXhTraceActorBase* TraceActor = Cast<AXhTraceActorBase>(TraceChild->GetChildActor());
+		if (TraceActor)
+		{
+			TraceActor->XhClickCompleted();
+		}
+	}
+}
+
 void AXhCharacter::MoveX(const FInputActionValue& Value)
 {
 	if (bEnableKB)

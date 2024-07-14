@@ -11,7 +11,7 @@ AXhWidgetActor::AXhWidgetActor()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	XhBeginOrder = -1;
 }
 
 void AXhWidgetActor::Init()
@@ -31,18 +31,15 @@ void AXhWidgetActor::Init()
 	}
 }
 
-void AXhWidgetActor::XhConstruct()
-{
-	XhConstruct_BP();
-}
-
 // Called when the game starts or when spawned
 void AXhWidgetActor::BeginPlay()
 {
+	XH_BP_EXEC_B(XhBegin)
 	Super::BeginPlay();
 	Init();
-	XhBegin();
+	XH_BP_EXEC_E(XhBegin)
 }
+
 
 // Called every frame
 void AXhWidgetActor::Tick(float DeltaTime)

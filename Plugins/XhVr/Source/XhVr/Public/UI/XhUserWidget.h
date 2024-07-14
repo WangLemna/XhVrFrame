@@ -17,28 +17,31 @@ class XHVR_API UXhUserWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
-	void XhNativeConstruct() {};
-	void XhNativeOnInitialized() {};
+	void XhNativeConstruct();
+
+	void NativeInit();
+
+	void XhButtonInit(UXhButton* XhButton);
+public:
+	int32 XhConstructOrder;
+	TArray<UXhButton*> ButtonChildren;
 public:
 	/** XhUserWidget */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Xh")
 	AXhWidgetActor* XhWidgetActor;
 
-	void NativeInit();
-
-	void XhButtonInit(UXhButton* XhButton);
-
-
+	UFUNCTION(BlueprintImplementableEvent)
+	void XhConstruct();
 	UFUNCTION()
 	void XhUpdateClickTime(const FString& ButtonID, UXhButton* Button);//UPARAM(ref) 
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "AddDynamicXhButton", DisplayName = "AddDynamicXhButton"))
 	void AddDynamicXhButton(const TArray<UXhButton*> DynamicButtons);
 protected:
+	TArray<UXhButton*> ButtonNeedUpdateChildren;
+
 	virtual void NativeOnInitialized() override;
 	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
-	TArray<UXhButton*> ButtonChildren;
-	TArray<UXhButton*> ButtonNeedUpdateChildren;
 	void GetAllXhButton(UPanelWidget* RootPanel, TArray<UXhButton*>& XhButtonArray);
 };
 

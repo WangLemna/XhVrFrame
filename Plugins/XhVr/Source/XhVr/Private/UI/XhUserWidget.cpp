@@ -6,6 +6,11 @@
 #include "UI/XhButton.h"
 #include "UI/XhWidgetActor.h"
 
+void UXhUserWidget::XhNativeConstruct()
+{
+
+}
+
 void UXhUserWidget::NativeInit()
 {
 	UPanelWidget* RootPanel = Cast<UPanelWidget>(GetRootWidget());
@@ -55,7 +60,6 @@ void UXhUserWidget::AddDynamicXhButton(const TArray<UXhButton*> DynamicButtons)
 {
 	for (UXhButton* XhButton : DynamicButtons)
 	{
-		//ButtonChildren.AddUnique(XhButton);
 		XhButtonInit(XhButton);
 	}
 }
@@ -63,10 +67,12 @@ void UXhUserWidget::AddDynamicXhButton(const TArray<UXhButton*> DynamicButtons)
 void UXhUserWidget::NativeOnInitialized()
 {
 	Super::NativeOnInitialized();
+	XhConstructOrder = -1;
 }
 
 void UXhUserWidget::NativeConstruct()
 {
+
 	Super::NativeConstruct();
 }
 

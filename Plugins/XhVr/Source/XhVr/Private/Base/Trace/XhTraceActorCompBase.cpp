@@ -74,6 +74,22 @@ void UXhTraceActorCompBase::XhSetTraceMode(EXhTraceMode InTraceMode)
 	TraceMode = InTraceMode;
 }
 
+void UXhTraceActorCompBase::XhClickStarted()
+{
+	if (XhWidgetTrace && XhWidgetTrace->IsActive())
+	{
+		XhWidgetTrace->PressPointerKey(FKey("LeftMouseButton"));
+	}
+}
+
+void UXhTraceActorCompBase::XhClickCompleted()
+{
+	if (XhWidgetTrace && XhWidgetTrace->IsActive())
+	{
+		XhWidgetTrace->ReleasePointerKey(FKey("LeftMouseButton"));
+	}
+}
+
 void UXhTraceActorCompBase::XhSendTrace_Implementation()
 {
 	FHitResult OutHit;

@@ -61,9 +61,20 @@ protected:
 public:
 	UFUNCTION(BlueprintImplementableEvent)
 	void XhBegin();
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void NextQuestion();
+	UFUNCTION(BlueprintCallable)
 	bool InitData();
+
+	UFUNCTION(BlueprintCallable,BlueprintPure)
+	TArray<int32> GetErrorQuestionsIndex();
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	int32 GetErrorQuestionsCount();
+
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	TArray<FText> GetErrorQuestions();
+	UFUNCTION(BlueprintImplementableEvent)
+	void XhAnswerFinish();
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

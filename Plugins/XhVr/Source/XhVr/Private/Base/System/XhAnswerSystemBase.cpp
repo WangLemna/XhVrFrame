@@ -16,10 +16,7 @@ AXhAnswerSystemBase::AXhAnswerSystemBase()
 void AXhAnswerSystemBase::BeginPlay()
 {
 	Super::BeginPlay();
-	if (InitData())
-	{
-		NextQuestion();
-	}
+	XhBegin();
 }
 
 void AXhAnswerSystemBase::NextQuestion_Implementation()
@@ -35,9 +32,8 @@ void AXhAnswerSystemBase::NextQuestion_Implementation()
 					AXhAnswerBase* XhAnswerBase = Cast<AXhAnswerBase>(InActor);
 					XhAnswerBase->QuestionLib = QuestionLibs[QuestionIndex];
 					XhAnswerBase->XhAnswerSystemBase = this;
-					XhAnswerBase->XhConstruct();
 				};
-			GetWorld()->SpawnActor<AXhAnswerBase>(AXhAnswerBase::StaticClass(), AnswerActorTransform, SpawnParameters);
+			GetWorld()->SpawnActor<AXhAnswerBase>(AnswerActor, AnswerActorTransform, SpawnParameters);
 			QuestionIndex++;
 		}
 		else
@@ -47,7 +43,7 @@ void AXhAnswerSystemBase::NextQuestion_Implementation()
 	}
 	else
 	{
-		//
+		XhAnswerFinish();
 	}
 }
 
@@ -56,6 +52,20 @@ bool AXhAnswerSystemBase::InitData()
 	int32 Length = QuestionLibs.Num();
 	for (int32 i = 0; i < Length; i++)
 	{
+		if (QuestionLibs[i].Answer.XhSet.IsEmpty())
+		{
+			FString XhLog = FString::Printf(TEXT("InitData:'%s'答案为空！"), *QuestionLibs[i].Question.Content.ToString());
+			UXhTool::WriteLog(this, XhLog);
+			Answers.Empty();
+			return false;
+		}
+		if (QuestionLibs[i].QuestionType == EQuestionType::One && QuestionLibs[i].Answer.XhSet.Num() != 1)
+		{
+			FString XhLog = FString::Printf(TEXT("InitData:'%s'答案的与问题类型不符！"), *QuestionLibs[i].Question.Content.ToString());
+			UXhTool::WriteLog(this, XhLog);
+			Answers.Empty();
+			return false;
+		}
 		TSet<FString> BtnIDs;
 		for (auto& Btn : QuestionLibs[i].Buttons)
 		{
@@ -74,6 +84,57 @@ bool AXhAnswerSystemBase::InitData()
 		}
 	}
 	return true && Length > 0;
+}
+
+TArray<int32> AXhAnswerSystemBase::GetErrorQuestionsIndex()
+{
+	TArray<int32> ErrorQuestionsIndex;
+	for (auto& Temp : Answers)
+	{
+		if (Selects.Contains(Temp.Key))
+		{
+			if (Temp.Value.XhSet.CreateConstIterator() == Selects.Find(Temp.Key)->XhSet.CreateConstIterator())
+			{
+				continue;
+			}
+		}
+		ErrorQuestionsIndex.Add(Temp.Key);
+	}
+	return ErrorQuestionsIndex;
+}
+
+int32 AXhAnswerSystemBase::GetErrorQuestionsCount()
+{
+	int32 Count = 0;
+	for (auto& Temp : Answers)
+	{
+		if (Selects.Contains(Temp.Key))
+		{
+			if (Temp.Value.XhSet.CreateConstIterator() == Selects.Find(Temp.Key)->XhSet.CreateConstIterator())
+			{
+				continue;
+			}
+		}
+		Count++;
+	}
+	return Count;
+}
+
+TArray<FText> AXhAnswerSystemBase::GetErrorQuestions()
+{
+	TArray<FText> ErrorQuestions;
+	for (auto& Temp : Answers)
+	{
+		if (Selects.Contains(Temp.Key))
+		{
+			if (Temp.Value.XhSet.CreateConstIterator() == Selects.Find(Temp.Key)->XhSet.CreateConstIterator())
+			{
+				continue;
+			}
+		}
+		ErrorQuestions.Add(QuestionLibs[Temp.Key].Question.Content);
+	}
+	return ErrorQuestions;
 }
 
 // Called every frame

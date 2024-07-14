@@ -127,13 +127,13 @@ struct FButtonContent
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	FTextContent Content;
+	FTextContent ButtonText;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FString ButtonID;
 	FButtonContent()
 	{}
-	FButtonContent(FTextContent InContent, FString InButtonID)
-		:Content(InContent)
+	FButtonContent(FTextContent InButtonText, FString InButtonID)
+		:ButtonText(InButtonText)
 		,ButtonID(InButtonID)
 	{
 

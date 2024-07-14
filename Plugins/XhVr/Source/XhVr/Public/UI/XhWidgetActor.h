@@ -17,9 +17,12 @@ public:
 	AXhWidgetActor();
 
 	void Init();
-	void XhConstruct();
+
+
 public:
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, meta = (Keywords = "XhClick", DisplayName = "XhClick"))//BlueprintNativeEvent
+	int32 XhBeginOrder;
+public:
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, meta = (Keywords = "XhClick", DisplayName = "XhClick"))//BlueprintImplementableEvent
 	void XhClicked(const FString& ButtonID, UXhButton* Button);//UPARAM(ref)
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, meta = (Keywords = "XhUnHover", DisplayName = "XhUnHover"))
@@ -27,7 +30,6 @@ public:
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, meta = (Keywords = "XhHover", DisplayName = "XhHover"))
 	void XhHovered(const FString& ButtonID, UXhButton* Button);
-
 
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, meta = (Keywords = "XhUnHover", DisplayName = "XhPressed"))
 	void XhPressed(const FString& ButtonID, UXhButton* Button);
@@ -39,8 +41,6 @@ protected:
 	virtual void BeginPlay() override;
 	UFUNCTION(BlueprintImplementableEvent)
 	void XhBegin();
-	UFUNCTION(BlueprintImplementableEvent)
-	void XhConstruct_BP();
 
 public:	
 	// Called every frame

@@ -80,6 +80,22 @@ void AXhTraceActorBase::XhChangeActors(const TArray<AActor*>& TraceIgnoreActors,
 	}
 }
 
+void AXhTraceActorBase::XhClickStarted()
+{
+	if (TraceActorCompBase)
+	{
+		TraceActorCompBase->XhClickStarted();
+	}
+}
+
+void AXhTraceActorBase::XhClickCompleted()
+{
+	if (TraceActorCompBase)
+	{
+		TraceActorCompBase->XhClickCompleted();
+	}
+}
+
 // Called when the game starts or when spawned
 void AXhTraceActorBase::BeginPlay()
 {
