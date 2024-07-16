@@ -109,6 +109,9 @@ protected:
 	UArrowComponent* WalkArrow;
 	TArray<USplineMeshComponent*> SplineMeshes;
 
+	FVector FinalWalkLocation;
+	FRotator FinalWalkRotation;
+
 public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhWalk|BlueprintChange")

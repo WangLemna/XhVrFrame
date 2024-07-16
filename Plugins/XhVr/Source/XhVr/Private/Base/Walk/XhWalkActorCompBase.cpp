@@ -35,6 +35,8 @@ UXhWalkActorCompBase::UXhWalkActorCompBase()
 	DrawDebugType = EDrawDebugTrace::None;
 	FadeColor = FLinearColor::Black;
 	InitailLocationZ = 0;
+	FinalWalkLocation = FVector(0.f);
+	FinalWalkRotation = FRotator(0.f);
 }
 
 
@@ -270,8 +272,6 @@ void UXhWalkActorCompBase::XhOverWalk_Implementation()
 		if (bValidSpline)
 		{
 			bIsWalking = true;
-			FVector FinalWalkLocation;
-			FRotator FinalWalkRotation;
 			XhGetWalkLocarionAndRotation(FinalWalkLocation, FinalWalkRotation);
 
 			if (FadeInDuration < GetWorld()->GetDeltaSeconds())
