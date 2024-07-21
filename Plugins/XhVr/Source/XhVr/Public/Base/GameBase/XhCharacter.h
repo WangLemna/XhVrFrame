@@ -50,6 +50,8 @@ public:
 	void InitLog();
 	void InitWalk();
 	void InitTrace();
+
+	USphereComponent* GetGrabCollision(EXhHand XhHand);
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

@@ -216,6 +216,25 @@ void AXhCharacter::InitTrace()
 	}
 }
 
+USphereComponent* AXhCharacter::GetGrabCollision(EXhHand XhHand)
+{
+	USphereComponent* CollisionComponent = nullptr;
+	switch (XhHand)
+	{
+	case EXhHand::None:
+		break;
+	case EXhHand::L_Hand:
+		CollisionComponent = LeftGrabCollision;
+		break;
+	case EXhHand::R_Hand:
+		CollisionComponent = RightGrabCollision;
+		break;
+	default:
+		break;
+	}
+	return CollisionComponent;
+}
+
 // Called when the game starts or when spawned
 void AXhCharacter::BeginPlay()
 {

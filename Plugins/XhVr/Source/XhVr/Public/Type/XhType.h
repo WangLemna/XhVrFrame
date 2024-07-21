@@ -90,6 +90,23 @@ enum class EQuestionType : uint8
 	One UMETA(DisplayName = "单选"),
 };
 
+
+UENUM(BlueprintType)
+enum class EXhGrabState : uint8
+{
+	None UMETA(DisplayName = "未触碰"),
+	LeftCatch UMETA(DisplayName = "左手已触碰"),
+	RightCatch UMETA(DisplayName = "右手已触碰"),
+	AllCatch UMETA(DisplayName = "左右手都已触碰"),
+	LeftGrab UMETA(DisplayName = "左手已拿起"),
+	RightGrab UMETA(DisplayName = "右手已拿起"),
+	LeftGrabRightCatch UMETA(DisplayName = "左手已拿起，右手已触碰"),
+	RightGrabLeftCatch UMETA(DisplayName = "右手已拿起，左手已触碰"),
+	Grabbing UMETA(DisplayName = "正在拿起中"),
+};
+
+
+
 USTRUCT(BlueprintType)
 struct FTextContent
 {
