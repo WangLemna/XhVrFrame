@@ -21,7 +21,7 @@ class XHVR_API UXhGrabActorCompBase : public UActorComponent
 public:	
 	// Sets default values for this component's properties
 	UXhGrabActorCompBase();
-
+	
 public:
 	UFUNCTION(BlueprintCallable)
 	void XhRegisterGrabMeshComp(UStaticMeshComponent* InMeshComp);
@@ -32,22 +32,39 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void XhUnregisterGrabMeshComps(const TArray<UStaticMeshComponent*>& InMeshComps);
 
+	UFUNCTION(BlueprintCallable)
+	void XhSetGrabMeshCompState(UStaticMeshComponent* InMeshComp, EXhGrabState InXhGrabState);
+	UFUNCTION(BlueprintCallable)
+	void XhSetGrabMeshCompsState(const TArray<UStaticMeshComponent*>& InMeshComps, EXhGrabState InXhGrabState);
 
-	//UFUNCTION(BlueprintImplementableEvent)
-	//void XhBeginOverlap(const TArray<UStaticMeshComponent*>& InMeshComps);
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	EXhGrabState XhGetGrabMeshCompState(UStaticMeshComponent* InMeshComp);
 
 
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
+	bool XhCanGrab(UStaticMeshComponent* InMeshComp);
+
+	UFUNCTION(BlueprintCallable)
+	void XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* AttchParent);
+
+public:
+	UPROPERTY(BlueprintReadWrite,EditAnywhere)
+	TArray<EXhGrabState> CanGrabState;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TMap<FGrabAndHandState, EXhGrabState> NextGrabStateMap;
 
 
 public:
-	TArray<UStaticMeshComponent*> GrabMeshComps;
-	TMap<UStaticMeshComponent*, EXhGrabState> MeshCompsGrabState;
-	TMap<UStaticMeshComponent*, EXhGrabState> MeshCompsLastGrabState;
 	AXhCharacter* XhCharacter;
+	TArray<UStaticMeshComponent*> GrabMeshComps;
+	TMap<UStaticMeshComponent*, EXhGrabState> MeshCompsCurrentGrabState;
+	TMap<UStaticMeshComponent*, EXhGrabState> MeshCompsLastGrabState;
 public:
 	void XhNativeBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	void XhNativeEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
-	EXhGrabState NextGrabeState(UStaticMeshComponent* InMeshComp, EXhGrabState InGrabState);
+	EXhGrabState NextGrabeState(UStaticMeshComponent* InMeshComp, FGrabAndHandState InGrabAndHandState);
+
+	EXhGrabState GetNextGrabeState(FGrabAndHandState InGrabAndHandState);
 protected:
 	// Called when the game starts
 	virtual void BeginPlay() override;

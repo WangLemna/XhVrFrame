@@ -61,6 +61,7 @@ enum class EXhHand : uint8
 	None UMETA(DisplayName = "无"),
 	L_Hand UMETA(DisplayName = "左手"),
 	R_Hand UMETA(DisplayName = "右手"),
+	Max UMETA(DisplayName = ""),
 };
 #pragma endregion
 
@@ -90,22 +91,68 @@ enum class EQuestionType : uint8
 	One UMETA(DisplayName = "单选"),
 };
 
+UENUM(BlueprintType)
+enum class EXhGrabStateEvent : uint8
+{
+	None UMETA(DisplayName = "未发生事件"),
+	E_LeftOverlap_S UMETA(DisplayName = "左手触碰事件开始"),
+	E_LeftOverlap_E UMETA(DisplayName = "左手触碰事件结束"),
+	E_RightOverlap_S UMETA(DisplayName = "右手触碰事件开始"),
+	E_RightOverlap_E UMETA(DisplayName = "右手触碰事件结束"),
+	E_LeftGrab_S UMETA(DisplayName = "左手拿起事件开始"),
+	E_LeftGrab_E UMETA(DisplayName = "左手拿起事件结束"),
+	E_RightGrab_S UMETA(DisplayName = "右手拿起事件开始"),
+	E_RightGrab_E UMETA(DisplayName = "右手拿起事件结束"),
+	E_Drop UMETA(DisplayName = "扔下事件"),
+	Max UMETA(DisplayName = ""),
+};
 
 UENUM(BlueprintType)
 enum class EXhGrabState : uint8
 {
 	None UMETA(DisplayName = "未触碰"),
-	LeftCatch UMETA(DisplayName = "左手已触碰"),
-	RightCatch UMETA(DisplayName = "右手已触碰"),
-	AllCatch UMETA(DisplayName = "左右手都已触碰"),
+	LeftOverlap UMETA(DisplayName = "左手已触碰"),
+	RightOverlap UMETA(DisplayName = "右手已触碰"),
+	AllOverlap UMETA(DisplayName = "左右手都已触碰"),
 	LeftGrab UMETA(DisplayName = "左手已拿起"),
 	RightGrab UMETA(DisplayName = "右手已拿起"),
-	LeftGrabRightCatch UMETA(DisplayName = "左手已拿起，右手已触碰"),
-	RightGrabLeftCatch UMETA(DisplayName = "右手已拿起，左手已触碰"),
-	Grabbing UMETA(DisplayName = "正在拿起中"),
+	LeftGrabRightOverlap UMETA(DisplayName = "左手已拿起，右手已触碰"),
+	RightGrabLeftOverlap UMETA(DisplayName = "右手已拿起，左手已触碰"),
+	LeftGrabbing UMETA(DisplayName = "左手正在拿起中"),
+	RightGrabbing UMETA(DisplayName = "右手正在拿起中"),
+	Max UMETA(DisplayName = ""),
 };
 
+USTRUCT(BlueprintType)
+struct FGrabAndHandState
+{
+	GENERATED_USTRUCT_BODY()
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EXhGrabState GrabState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EXhGrabStateEvent HandState;
+	FGrabAndHandState()
+		: GrabState(EXhGrabState::None)
+		, HandState(EXhGrabStateEvent::None)
+	{
 
+	}
+	FGrabAndHandState(EXhGrabState InXhGrabState, EXhGrabStateEvent InXhHand)
+		: GrabState(InXhGrabState)
+		, HandState(InXhHand)
+	{
+
+	}
+	bool operator==(const FGrabAndHandState B) const
+	{
+		return GrabState == B.GrabState && HandState == B.HandState;
+	}
+	friend inline int32 GetTypeHash(const FGrabAndHandState& Key)
+	{
+		return HashCombine((uint32)Key.GrabState, (uint32)Key.HandState);
+	}
+};
 
 USTRUCT(BlueprintType)
 struct FTextContent
