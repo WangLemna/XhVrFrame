@@ -7,16 +7,16 @@
 #define TIMERHANDEL_VAR(A) XH_MACRO_COMBINE2(XhTH_,A)
 #define AUTO_VAR(A) XH_MACRO_COMBINE2(XhAuto_,A)
 #define XH_DELAY_B(Var) FTimerHandle TIMERHANDEL_VAR(Var);\
-	auto AUTO_VAR(Var) = [&] {\
-	if (TIMERHANDEL_VAR(Var).IsValid())\
-	{\
-		GetWorld()->GetTimerManager().ClearTimer(TIMERHANDEL_VAR(Var));\
-	}
+	auto AUTO_VAR(Var) = [&] {
 
 #define XH_DELAY_E(Var,DelayTime) };\
 GetWorld()->GetTimerManager().SetTimer(TIMERHANDEL_VAR(Var), AUTO_VAR(Var), DelayTime, false);
 
 #define XH_BP_EXEC_VAR(A) XH_MACRO_COMBINE2(A, Order)
+
+#define XH_BP_EXEC(FuncName) void FuncName();\
+	int32 XH_BP_EXEC_VAR(FuncName) = -1;
+
 #define XH_BP_EXEC_B(FuncName) XH_BP_EXEC_VAR(FuncName)++;
 
 #define XH_BP_EXEC_E(FuncName) if (XH_BP_EXEC_VAR(FuncName) > 0)\

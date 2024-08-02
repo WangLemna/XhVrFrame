@@ -136,10 +136,13 @@ public:
 
 #pragma region XhMath
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "GetArrowDirection"), Category = "XhTool|XhMath")
-	static void GetTipArrowDegree(const FTransform & SourceTransform, const FVector& TargetLocation, float& Degree, float& YDegree);
+	static void GetTipArrowDegree(const FTransform& SourceTransform, const FVector& TargetLocation, float& Degree, float& YDegree);
 
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "StringSetIsEqual"), Category = "XhTool|XhMath")
 	static bool StringSetIsEqual(const TSet<FString>& Set1, const TSet<FString>& Set2);
+
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "ToHMDTransform"), Category = "XhTool|XhMath")
+	static FTransform ToHMD_Transform(const FTransform& InTransform);
 #pragma endregion
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "WriteLog", WorldContext = "WorldContextObject"), Category = "XhTool|XhLog")
 	static void WriteLog(const UObject* WorldContextObject, const FString& InStringLog, bool bScreen = true);

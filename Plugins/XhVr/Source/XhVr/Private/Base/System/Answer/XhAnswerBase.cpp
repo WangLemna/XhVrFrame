@@ -69,6 +69,7 @@ void AXhAnswerBase::XhNativeClicked(const FString& ButtonID, UXhButton* Button, 
 		default:
 			break;
 		}
+
 		FButtonStyle ButtonStyle = Button->GetStyle();
 		if (SelectSet.XhSet.Contains(ButtonID))
 		{

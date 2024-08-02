@@ -1,8 +1,7 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "Base/Grab/XhGrabActorCompBase.h"
-#include "Base/GameBase/XhCharacter.h"
 // Sets default values for this component's properties
 UXhGrabActorCompBase::UXhGrabActorCompBase()
 {
@@ -119,72 +118,90 @@ EXhGrabState UXhGrabActorCompBase::XhGetGrabMeshCompState(UStaticMeshComponent* 
 	return EXhGrabState::Max;
 }
 
-void UXhGrabActorCompBase::XhGrab_Implementation(UStaticMeshComponent* InMeshComp, USceneComponent* AttchParent)
+void UXhGrabActorCompBase::XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhGrabStateEvent InGrabStateEvent /*= EXhGrabStateEvent::Max*/, const FName& SocketName /*= NAME_None*/, float DelayAttch /*= 0*/)
 {
-	/*switch (InXhHand)
+	if (XhCanGrab(InMeshComp, InGrabStateEvent))
 	{
-	case EXhHand::None:
-		break;
-	case EXhHand::L_Hand:
-		break;
-	case EXhHand::R_Hand:
-		break;
-	case EXhHand::Max:
-		break;
-	default:
-		break;
-	}*/
+		NextGrabeState(InMeshComp, FGrabAndHandState(MeshCompsCurrentGrabState[InMeshComp], InGrabStateEvent));
+		if (DelayAttch <= 0)
+		{
+			XhGrabEnd(InMeshComp, InAttchParent, SocketName);
+		}
+		else
+		{
+			FTimerHandle TimerHandle;
+			FTimerDelegate TimerDelegate = FTimerDelegate::CreateUObject(this, &UXhGrabActorCompBase::XhGrabEnd, InMeshComp, InAttchParent, SocketName);
+			GetWorld()->GetTimerManager().SetTimer(TimerHandle, TimerDelegate, DelayAttch, false);
+		}
+	}
 }
 
-bool UXhGrabActorCompBase::XhCanGrab_Implementation(UStaticMeshComponent* InMeshComp)
+void UXhGrabActorCompBase::XhGrabEnd(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, const FName SocketName)
 {
-	EXhGrabState LeftGrab = GetNextGrabeState(FGrabAndHandState(MeshCompsCurrentGrabState[InMeshComp], EXhGrabStateEvent::E_LeftGrab_S));
-	EXhGrabState RightGrab = GetNextGrabeState(FGrabAndHandState(MeshCompsCurrentGrabState[InMeshComp], EXhGrabStateEvent::E_RightGrab_S));
-	return LeftGrab == EXhGrabState::LeftGrabbing || RightGrab == EXhGrabState::RightGrabbing;
+	InMeshComp->AttachToComponent(InAttchParent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketName);
+	EXhGrabStateEvent GrabEndEvent = EXhGrabStateEvent::Max;
+	if (MeshCompsCurrentGrabState[InMeshComp] == EXhGrabState::LeftGrabbing)
+	{
+		GrabEndEvent = EXhGrabStateEvent::E_LeftGrab_E;
+	}
+	else if (MeshCompsCurrentGrabState[InMeshComp] == EXhGrabState::RightGrabbing)
+	{
+		GrabEndEvent = EXhGrabStateEvent::E_RightGrab_E;
+	}
+	NextGrabeState(InMeshComp, FGrabAndHandState(MeshCompsCurrentGrabState[InMeshComp], GrabEndEvent));
+}
+
+bool UXhGrabActorCompBase::XhCanGrab_Implementation(UStaticMeshComponent* InMeshComp, EXhGrabStateEvent InGrabStateEvent/* = EXhGrabStateEvent::Max*/)
+{
+	if (InGrabStateEvent == EXhGrabStateEvent::Max)
+	{
+		EXhGrabState LeftGrab = GetNextGrabeState(FGrabAndHandState(MeshCompsCurrentGrabState[InMeshComp], EXhGrabStateEvent::E_LeftGrab_S));
+		EXhGrabState RightGrab = GetNextGrabeState(FGrabAndHandState(MeshCompsCurrentGrabState[InMeshComp], EXhGrabStateEvent::E_RightGrab_S));
+		return LeftGrab == EXhGrabState::LeftGrabbing || RightGrab == EXhGrabState::RightGrabbing;
+	}
+	else
+	{
+		EXhGrabState Grab = GetNextGrabeState(FGrabAndHandState(MeshCompsCurrentGrabState[InMeshComp], InGrabStateEvent));
+		return Grab == EXhGrabState::LeftGrabbing || Grab == EXhGrabState::RightGrabbing;
+	}
 }
 
 void UXhGrabActorCompBase::XhNativeBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
-	if (XhCharacter && OtherActor == XhCharacter)
+	if (UStaticMeshComponent* SM = Cast<UStaticMeshComponent>(OverlappedComponent))
 	{
-		if (UStaticMeshComponent* SM = Cast<UStaticMeshComponent>(OverlappedComponent))
+		if (GrabMeshComps.Contains(SM))
 		{
-			if (GrabMeshComps.Contains(SM))
+			EXhGrabStateEvent XhGrabStateEvent = EXhGrabStateEvent::None;
+			if (LeftGrabCollisionComps.Contains(OtherComp))
 			{
-				EXhGrabStateEvent XhGrabStateEvent = EXhGrabStateEvent::None;
-				if (OtherComp == Cast<UStaticMeshComponent>(XhCharacter->GetGrabCollision(EXhHand::L_Hand)))
-				{
-					XhGrabStateEvent = EXhGrabStateEvent::E_LeftOverlap_S;
-				}
-				if (OtherComp == Cast<UStaticMeshComponent>(XhCharacter->GetGrabCollision(EXhHand::R_Hand)))
-				{
-					XhGrabStateEvent = EXhGrabStateEvent::E_RightOverlap_S;
-				}
-				NextGrabeState(SM, FGrabAndHandState(*MeshCompsCurrentGrabState.Find(SM), XhGrabStateEvent));
+				XhGrabStateEvent = EXhGrabStateEvent::E_LeftOverlap_S;
 			}
+			if (RightGrabCollisionComps.Contains(OtherComp))
+			{
+				XhGrabStateEvent = EXhGrabStateEvent::E_RightOverlap_S;
+			}
+			NextGrabeState(SM, FGrabAndHandState(*MeshCompsCurrentGrabState.Find(SM), XhGrabStateEvent));
 		}
 	}
 }
 
 void UXhGrabActorCompBase::XhNativeEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex)
 {
-	if (XhCharacter && OtherActor == XhCharacter)
+	if (UStaticMeshComponent* SM = Cast<UStaticMeshComponent>(OverlappedComponent))
 	{
-		if (UStaticMeshComponent* SM = Cast<UStaticMeshComponent>(OverlappedComponent))
+		if (GrabMeshComps.Contains(SM))
 		{
-			if (GrabMeshComps.Contains(SM))
+			EXhGrabStateEvent XhGrabStateEvent = EXhGrabStateEvent::None;
+			if (LeftGrabCollisionComps.Contains(OtherComp))
 			{
-				EXhGrabStateEvent XhGrabStateEvent = EXhGrabStateEvent::None;
-				if (OtherComp == Cast<UStaticMeshComponent>(XhCharacter->GetGrabCollision(EXhHand::L_Hand)))
-				{
-					XhGrabStateEvent = EXhGrabStateEvent::E_LeftOverlap_E;
-				}
-				if (OtherComp == Cast<UStaticMeshComponent>(XhCharacter->GetGrabCollision(EXhHand::R_Hand)))
-				{
-					XhGrabStateEvent = EXhGrabStateEvent::E_RightOverlap_E;
-				}
-				NextGrabeState(SM, FGrabAndHandState(*MeshCompsCurrentGrabState.Find(SM), XhGrabStateEvent));
+				XhGrabStateEvent = EXhGrabStateEvent::E_LeftOverlap_E;
 			}
+			if (RightGrabCollisionComps.Contains(OtherComp))
+			{
+				XhGrabStateEvent = EXhGrabStateEvent::E_RightOverlap_E;
+			}
+			NextGrabeState(SM, FGrabAndHandState(*MeshCompsCurrentGrabState.Find(SM), XhGrabStateEvent));
 		}
 	}
 }
@@ -214,7 +231,8 @@ void UXhGrabActorCompBase::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	
+	//XhRegisterGrabMeshComps()
+	//LeftGrabCollisionComps  RightGrabCollisionComps
 }
 
 

@@ -2,26 +2,21 @@
 
 
 #include "Base/Actor/XhOperateActorBase.h"
+#include "Base/Actor/XhActorBase.h"
 
-// Sets default values
 AXhOperateActorBase::AXhOperateActorBase()
 {
- 	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
-	PrimaryActorTick.bCanEverTick = true;
 
 }
 
-// Called when the game starts or when spawned
 void AXhOperateActorBase::BeginPlay()
 {
+	XH_BP_EXEC_B(XhBegin);
 	Super::BeginPlay();
-	
+	XH_BP_EXEC_E(XhBegin);
 }
 
-// Called every frame
 void AXhOperateActorBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
 }
-

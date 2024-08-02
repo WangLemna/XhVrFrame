@@ -17,8 +17,6 @@ public:
 	AXhWidgetActor();
 
 	void Init();
-
-
 public:
 	int32 XhBeginOrder;
 public:

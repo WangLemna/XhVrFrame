@@ -104,7 +104,7 @@ enum class EXhGrabStateEvent : uint8
 	E_RightGrab_S UMETA(DisplayName = "右手拿起事件开始"),
 	E_RightGrab_E UMETA(DisplayName = "右手拿起事件结束"),
 	E_Drop UMETA(DisplayName = "扔下事件"),
-	Max UMETA(DisplayName = ""),
+	Max UMETA(DisplayName = "None"),
 };
 
 UENUM(BlueprintType)
@@ -120,7 +120,7 @@ enum class EXhGrabState : uint8
 	RightGrabLeftOverlap UMETA(DisplayName = "右手已拿起，左手已触碰"),
 	LeftGrabbing UMETA(DisplayName = "左手正在拿起中"),
 	RightGrabbing UMETA(DisplayName = "右手正在拿起中"),
-	Max UMETA(DisplayName = ""),
+	Max UMETA(DisplayName = "None"),
 };
 
 USTRUCT(BlueprintType)
@@ -203,3 +203,20 @@ public:
 
 	}
 };
+
+
+USTRUCT(BlueprintType)
+struct FXhActorBaseArray
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<class AXhActorBase*> XhActorBaseArray;
+	FXhActorBaseArray()
+	{}
+	FXhActorBaseArray(const TArray<AXhActorBase*>& InArray)
+		:XhActorBaseArray(InArray)
+	{}
+};
+

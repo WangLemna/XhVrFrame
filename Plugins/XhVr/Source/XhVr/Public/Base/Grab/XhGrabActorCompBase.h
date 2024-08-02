@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -40,26 +40,30 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	EXhGrabState XhGetGrabMeshCompState(UStaticMeshComponent* InMeshComp);
 
-
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
-	bool XhCanGrab(UStaticMeshComponent* InMeshComp);
+	bool XhCanGrab(UStaticMeshComponent* InMeshComp, EXhGrabStateEvent InGrabStateEvent = EXhGrabStateEvent::Max);
+
 
 	UFUNCTION(BlueprintCallable)
-	void XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* AttchParent);
+	void XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhGrabStateEvent InGrabStateEvent = EXhGrabStateEvent::Max, const FName& SocketName = NAME_None, float DelayAttch = 0);
 
 public:
-	UPROPERTY(BlueprintReadWrite,EditAnywhere)
-	TArray<EXhGrabState> CanGrabState;
+	//UPROPERTY(BlueprintReadWrite,EditAnywhere)
+	//TArray<EXhGrabState> CanGrabState;
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<FGrabAndHandState, EXhGrabState> NextGrabStateMap;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TArray<UPrimitiveComponent*> LeftGrabCollisionComps;
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	TArray<UPrimitiveComponent*> RightGrabCollisionComps;
 
 
 public:
-	AXhCharacter* XhCharacter;
 	TArray<UStaticMeshComponent*> GrabMeshComps;
 	TMap<UStaticMeshComponent*, EXhGrabState> MeshCompsCurrentGrabState;
 	TMap<UStaticMeshComponent*, EXhGrabState> MeshCompsLastGrabState;
 public:
+	void XhGrabEnd(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, const FName SocketName);
 	void XhNativeBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
 	void XhNativeEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	EXhGrabState NextGrabeState(UStaticMeshComponent* InMeshComp, FGrabAndHandState InGrabAndHandState);

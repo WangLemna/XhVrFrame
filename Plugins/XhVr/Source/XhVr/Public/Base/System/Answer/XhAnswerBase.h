@@ -39,8 +39,8 @@ public:
 	TSubclassOf<AActor> TipClass;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings|Tip")
 	FTransform TipTransform;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings|Tip")
-	float TipDuringTime;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings|Tip")
+	//float TipDuringTime;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|BlueprintChange")
 	FXhSet SelectSet;

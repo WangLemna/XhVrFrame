@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
+#include "Type/XhCore.h"
 #include "XhUserWidget.generated.h"
 
 class AXhWidgetActor;
@@ -27,7 +28,7 @@ public:
 	TArray<UXhButton*> ButtonChildren;
 public:
 	/** XhUserWidget */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Xh")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar")
 	AXhWidgetActor* XhWidgetActor;
 
 	UFUNCTION(BlueprintImplementableEvent)

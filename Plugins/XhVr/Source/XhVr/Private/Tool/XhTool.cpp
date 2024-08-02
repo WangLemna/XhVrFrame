@@ -8,6 +8,7 @@
 #include "Runtime/Core/Public/HAL/FileManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "Settings/XhVrSettings.h"
+#include "IXRTrackingSystem.h"
 #if PLATFORM_WINDOWS
 #include "Windows/AllowWindowsPlatformTypes.h"
 #include "Windows/PreWindowsApi.h"
@@ -244,6 +245,27 @@ void UXhTool::GetTipArrowDegree(const FTransform& SourceTransform, const FVector
 bool UXhTool::StringSetIsEqual(const TSet<FString>& Set1, const TSet<FString>& Set2)
 {
 	return Set1.CreateConstIterator() == Set2.CreateConstIterator();
+}
+
+FTransform UXhTool::ToHMD_Transform(const FTransform& InTransform)
+{
+	FTransform Result = InTransform;
+	FVector Position(0.f);
+	if (GEngine->XRSystem.IsValid() && GEngine->XRSystem->IsHeadTrackingAllowed())
+	{
+		FQuat OrientationAsQuat;
+
+		GEngine->XRSystem->GetCurrentPose(IXRTrackingSystem::HMDDeviceId, OrientationAsQuat, Position);
+
+		//EndRotator = OrientationAsQuat.Rotator();
+	}
+	else
+	{
+		return Result;
+	}
+	FRotator Temp = FRotator(0, InTransform.Rotator().Yaw, 0);
+	Result.SetLocation(InTransform.GetLocation() - Temp.RotateVector(FVector(Position.X, Position.Y, 0)));
+	return Result;
 }
 
 void UXhTool::WriteLog(const UObject* WorldContextObject, const FString& InStringLog, bool bScreen /*= true*/)
