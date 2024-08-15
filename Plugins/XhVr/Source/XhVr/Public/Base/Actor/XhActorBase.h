@@ -40,6 +40,7 @@ public:
 protected:
 	UXhGrabActorCompBase* GrabComp;
 	bool bCanOpera;
+
 public:
 
 	UFUNCTION(BlueprintImplementableEvent, meta = (Keywords = "XhStart"))
@@ -51,6 +52,9 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "GetCanOpera"))
 	bool GetCanOpera();
 
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "XhDestroy"))
+	void XhDestroy();
+
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "ChangeCanOpera"))
 	void ChangeCanOpera(bool InCanOpera);
 protected:
@@ -58,7 +62,7 @@ protected:
 	void XhBegin();
 protected:
 	void XhNativeInit();
-
+	//void XhDestroyed(AActor* DestroyedActor);
 public:
 
 protected:

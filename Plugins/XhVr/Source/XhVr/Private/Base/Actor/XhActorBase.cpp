@@ -36,6 +36,14 @@ bool AXhActorBase::GetCanOpera()
 	return bCanOpera;
 }
 
+void AXhActorBase::XhDestroy()
+{
+	if(IsValid(this))
+	{
+		Destroy();
+	}
+}
+
 void AXhActorBase::ChangeCanOpera(bool InCanOpera)
 {
 	if (bCanOpera == InCanOpera)
@@ -65,19 +73,18 @@ void AXhActorBase::ChangeCanOpera(bool InCanOpera)
 
 void AXhActorBase::XhNativeInit()
 {
-	XhClassName = GetClass()->GetName().LeftChop(2);
 	GrabComp = GetComponentByClass<UXhGrabActorCompBase>();
 	if (GrabComp)
 	{
 		GrabComp = GrabComp->IsActive() ? GrabComp : nullptr;
 	}
+	//OnDestroyed.AddDynamic(this, &AXhActorBase::XhDestroyed);
+
+#pragma region 初始化变量
+	XhClassName = GetClass()->GetName().LeftChop(2);
 	if (UWorld* World = GetWorld())
 	{
 		XhGameState = Cast<AXhGameState>(UGameplayStatics::GetGameState(World));
-		if (!XhGameState)
-		{
-			UXhTool::WriteLog(this, TEXT("XhNativeInit:XhGameState获取失败！"));
-		}
 		XhPlayerController = Cast<AXhPlayerController>(UGameplayStatics::GetPlayerController(World, 0));
 		if (XhPlayerController)
 		{
@@ -100,33 +107,34 @@ void AXhActorBase::XhNativeInit()
 						XhPlayerState->XhOperaActors.AddUnique(this);
 					}
 				}
-				else
-				{
-					UXhTool::WriteLog(this, TEXT("XhNativeInit:XhPlayerState获取失败！"));
-				}
 			}
-			else
-			{
-				UXhTool::WriteLog(this, TEXT("XhNativeInit:XhCharacter获取失败！"));
-				UXhTool::WriteLog(this, TEXT("XhNativeInit:XhPlayerState获取失败！"));
-
-			}
-		}
-		else
-		{
-			UXhTool::WriteLog(this, TEXT("XhNativeInit:XhPlayerController获取失败！"));
-			UXhTool::WriteLog(this, TEXT("XhNativeInit:XhCharacter获取失败！"));
-			UXhTool::WriteLog(this, TEXT("XhNativeInit:XhPlayerState获取失败！"));
 		}
 	}
-	else
+	if (!XhGameState) 
 	{
 		UXhTool::WriteLog(this, TEXT("XhNativeInit:XhGameState获取失败！"));
+	}
+	if (!XhPlayerController)
+	{
 		UXhTool::WriteLog(this, TEXT("XhNativeInit:XhPlayerController获取失败！"));
+	}
+	if (!XhCharacter)
+	{
 		UXhTool::WriteLog(this, TEXT("XhNativeInit:XhCharacter获取失败！"));
+	}
+	if (!XhPlayerState)
+	{
 		UXhTool::WriteLog(this, TEXT("XhNativeInit:XhPlayerState获取失败！"));
 	}
+#pragma endregion
+
+
 }
+
+//void AXhActorBase::XhDestroyed(AActor* DestroyedActor)
+//{
+//	ChangeCanOpera(false);
+//}
 
 // Called when the game starts or when spawned
 void AXhActorBase::BeginPlay()

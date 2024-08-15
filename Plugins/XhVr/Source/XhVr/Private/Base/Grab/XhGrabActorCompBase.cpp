@@ -231,7 +231,7 @@ void UXhGrabActorCompBase::BeginPlay()
 	Super::BeginPlay();
 
 	// ...
-	//XhRegisterGrabMeshComps()
+	//XhRegisterGrabMeshComps(const TArray<UStaticMeshComponent*>& InMeshComps)
 	//LeftGrabCollisionComps  RightGrabCollisionComps
 }
 

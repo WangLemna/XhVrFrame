@@ -3,7 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+//#include "../../../../../../../Source/Runtime/Engine/Classes/Engine/DataTable.h"
+#include "Engine/DataTable.h"
 #include "XhType.generated.h"
+
 #pragma region XhButton
 /*间隔模式*/
 UENUM(BlueprintType)
@@ -75,22 +78,16 @@ enum class EWalkTraceHitResult : uint8
 };
 #pragma endregion
 
+#pragma region XhTrace
 UENUM(BlueprintType)
 enum class EXhTraceMode : uint8
 {
 	Trace UMETA(DisplayName = "发射射线"),
 	Widget UMETA(DisplayName = "UI射线"),
 };
+#pragma endregion
 
-
-
-UENUM(BlueprintType)
-enum class EQuestionType : uint8
-{
-	Multi UMETA(DisplayName = "多选"),
-	One UMETA(DisplayName = "单选"),
-};
-
+#pragma region XhGrab
 UENUM(BlueprintType)
 enum class EXhGrabStateEvent : uint8
 {
@@ -153,7 +150,15 @@ public:
 		return HashCombine((uint32)Key.GrabState, (uint32)Key.HandState);
 	}
 };
+#pragma endregion
 
+#pragma region XhAnswer
+UENUM(BlueprintType)
+enum class EQuestionType : uint8
+{
+	Multi UMETA(DisplayName = "多选"),
+	One UMETA(DisplayName = "单选"),
+};
 USTRUCT(BlueprintType)
 struct FTextContent
 {
@@ -203,6 +208,7 @@ public:
 
 	}
 };
+#pragma endregion
 
 
 USTRUCT(BlueprintType)
@@ -218,5 +224,34 @@ public:
 	FXhActorBaseArray(const TArray<AXhActorBase*>& InArray)
 		:XhActorBaseArray(InArray)
 	{}
+};
+
+UENUM(BlueprintType)
+enum class EButtonEvent : uint8
+{
+	None,
+	Pressed,
+	Released,
+	Max,
+};
+
+USTRUCT(BlueprintType)
+struct FActorTransform : public FTableRowBase
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Name;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FTransform Transform;
+	FActorTransform()
+		:Name(TEXT(""))
+		,Transform(FTransform())
+	{}
+	bool operator==(const FActorTransform B) const
+	{
+		return Name == B.Name && Transform.Equals(B.Transform,0.0001);
+	}
 };
 

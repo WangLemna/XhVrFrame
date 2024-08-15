@@ -298,4 +298,3 @@ void UXhTool::WriteLog(const UObject* WorldContextObject, const FString& InStrin
 	}
 }
 
-

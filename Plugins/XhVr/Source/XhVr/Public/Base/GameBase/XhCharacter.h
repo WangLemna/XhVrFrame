@@ -47,7 +47,6 @@ public:
 	// Sets default values for this character's properties
 	AXhCharacter();
 	void InitEnableKB();
-	void InitLog();
 	void InitWalk();
 	void InitTrace();
 
@@ -87,8 +86,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void XhClickCompleted();
 
-public:
-	UXhVrSettings* XhVrSettings;
+//public:
+//	UXhVrSettings* XhVrSettings;
 
 private:
 	//UInputComponent* XhCharInputComp;
@@ -115,19 +114,17 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Input")
 	UInputAction* ResetHandAction;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Keyboard")
-	bool bEnableKB;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Keyboard")
 	float KB_Speed;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Keyboard")
 	TSubclassOf<UUI_KB_ControlTip> UI_ControlTip;
 
+	bool bEnableKB;
 	EKB_ControlObj ControlObj;
 	UUI_KB_ControlTip* WBP_ControlTip;
 	float TurnRotatorValue;
 #pragma endregion
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Debug")
-	bool bDebug;
+
 
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Walk")

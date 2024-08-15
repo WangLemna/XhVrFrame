@@ -64,7 +64,7 @@ AXhCharacter::AXhCharacter()
 
 	bUseControllerRotationYaw = false;
 
-	XhVrSettings = GetMutableDefault<UXhVrSettings>();
+
 	WalkHand = EXhHand::L_Hand;
 	TraceHand = EXhHand::L_Hand;
 	KB_Speed = 1.f;
@@ -74,6 +74,7 @@ AXhCharacter::AXhCharacter()
 
 void AXhCharacter::InitEnableKB()
 {
+	bEnableKB = true;
 	LeftMotionController->PlayerIndex = -1.f;//SetAssociatedPlayerIndex
 	RightMotionController->PlayerIndex = -1.f;
 	if (UI_ControlTip)
@@ -88,55 +89,6 @@ void AXhCharacter::InitEnableKB()
 	if (APlayerController* PlayerController = Cast<APlayerController>(Controller))
 	{
 		PlayerController->SetShowMouseCursor(true);
-	}
-	//UInputComponent
-}
-
-void AXhCharacter::InitLog()
-{
-	//FString XhLogPath = FPaths::ProjectDir() + "Xh/";
-	FString XhLogPath = XhVrSettings->LogPath;
-	//FString LogFileName = FApp::GetProjectName();
-	FString LogFileName = XhVrSettings->LogFileName;
-	if (FPaths::DirectoryExists(XhLogPath))
-	{
-		TArray<FString> FilePathList;
-		IFileManager::Get().FindFilesRecursive(FilePathList, *XhLogPath, TEXT("*"), true, true);
-		int64 LogSize = -1;
-		for (auto& Temp : FilePathList)
-		{
-			LogSize += IFileManager::Get().GetStatData(*Temp).FileSize;
-		}
-		if (XhVrSettings->MaxLogSize <= LogSize)//XhMaxLogSize
-		{
-			if (IFileManager::Get().DeleteDirectory(*XhLogPath, true, true))
-			{
-				UE_LOG(XhCharacterLog, Warning, TEXT("'%s' 占用空间过大，已删除"), *XhLogPath);
-			}
-			else
-			{
-				UE_LOG(XhCharacterLog, Error, TEXT("'%s' 删除失败！请手动删除！"), *XhLogPath);
-			}
-		}
-		else
-		{
-			if (FPaths::FileExists(XhLogPath + LogFileName + ".log"))
-			{
-				if (FPaths::FileExists(XhLogPath + LogFileName + "_2.log"))
-				{
-					FString FilePath = XhLogPath + LogFileName + "_2.log";
-					FString XhDateString = FDateTime::Now().ToString(TEXT("%Y.%m.%d-%H.%M.%S"));
-					FString NewPath = XhLogPath + LogFileName + "-backup-" + XhDateString + ".log";
-					IFileManager::Get().Move(*NewPath, *FilePath);
-				}
-				{
-					FString FilePath = XhLogPath + LogFileName + ".log";
-					FString NewPath = XhLogPath + LogFileName + "_2.log";
-					IFileManager::Get().Move(*NewPath, *FilePath);
-				}
-			}
-
-		}
 	}
 }
 
@@ -246,19 +198,6 @@ void AXhCharacter::BeginPlay()
 		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PlayerController->GetLocalPlayer()))
 		{
 			Subsystem->AddMappingContext(DefaultMappingContext, 0);
-		}
-	}
-	//是否启用键盘输入(非VR模式)
-	if (bEnableKB)
-	{
-		InitEnableKB();
-	}
-	//日志
-	if (XhVrSettings)
-	{
-		if (XhVrSettings->bEnableLog)
-		{
-			InitLog();
 		}
 	}
 	//行走
