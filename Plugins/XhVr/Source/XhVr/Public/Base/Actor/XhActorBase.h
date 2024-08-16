@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -34,29 +34,34 @@ public:
 	AXhCharacter* XhCharacter;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
 	FString XhClassName;
-
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base", meta = (ExposeOnSpawn = "true"))
+	FString XhActorId;
 
 
 protected:
-	UXhGrabActorCompBase* GrabComp;
 	bool bCanOpera;
 
 public:
-
-	UFUNCTION(BlueprintImplementableEvent, meta = (Keywords = "XhStart"))
+	//存在于场景中的start
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, meta = (Keywords = "XhStart"))
 	void XhStart();
 
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "XhGrab"))
-	void XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhGrabStateEvent InGrabStateEvent = EXhGrabStateEvent::Max, const FName& SocketName = NAME_None, float DelayAttch = 0);
+	//动画通知的XhManual
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, meta = (Keywords = "XhManual"))
+	void XhManual();
 
+	//能否被操作
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "GetCanOpera"))
 	bool GetCanOpera();
 
+	//销毁
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "XhDestroy"))
 	void XhDestroy();
 
+	//改变操作状态
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "ChangeCanOpera"))
 	void ChangeCanOpera(bool InCanOpera);
+
 protected:
 	UFUNCTION(BlueprintImplementableEvent, meta = (Keywords = "XhBegin"))
 	void XhBegin();

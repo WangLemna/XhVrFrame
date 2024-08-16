@@ -17,9 +17,17 @@ class XHVR_API AXhPlayerState : public APlayerState
 	GENERATED_BODY()
 
 
-public:	
+public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
 	TMap<FString, FXhActorBaseArray> XhActorsData;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
+	TMap<FString, AXhActorBase*> XhActorsDataById;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
 	TArray<AXhActorBase*> XhOperaActors;
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	TArray<AXhActorBase*> GetXhActorsByClassName(const FString& InClassName);
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	AXhActorBase* GetXhActorById(const FString& InId);
 };

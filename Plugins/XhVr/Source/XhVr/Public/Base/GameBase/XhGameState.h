@@ -13,5 +13,8 @@ UCLASS()
 class XHVR_API AXhGameState : public AGameState
 {
 	GENERATED_BODY()
-	
+
+protected:
+	/** Overridable native event for when play begins for this actor. */
+	virtual void BeginPlay() override;
 };

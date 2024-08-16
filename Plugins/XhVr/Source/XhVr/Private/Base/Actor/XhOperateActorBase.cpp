@@ -11,6 +11,19 @@ AXhOperateActorBase::AXhOperateActorBase()
 	bCanOpera = true;
 	GrabActorCompBase = CreateDefaultSubobject<UXhGrabActorCompBase>(TEXT("GrabActorCompBase"));
 	bAutoInitGrab = true;
+	GrabComp = nullptr;
+}
+
+void AXhOperateActorBase::XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhGrabStateEvent InGrabStateEvent /*= EXhGrabStateEvent::Max*/, const FName& SocketName /*= NAME_None*/, float DelayAttch /*= 0*/)
+{
+	if (GrabComp)
+	{
+		GrabComp->XhGrab(InMeshComp, InAttchParent, InGrabStateEvent, SocketName, DelayAttch);
+	}
+	else
+	{
+		UXhTool::WriteLog(this, TEXT("XhGrab:GrabComp无效！"));
+	}
 }
 
 void AXhOperateActorBase::BeginPlay()
@@ -37,6 +50,16 @@ void AXhOperateActorBase::InitGrab()
 	else
 	{
 		UXhTool::WriteLog(this, TEXT("InitGrab:初始化抓取失败！"));
+	}
+}
+
+void AXhOperateActorBase::XhNativeInit()
+{
+	Super::XhNativeInit();
+	GrabComp = GetComponentByClass<UXhGrabActorCompBase>();
+	if (GrabComp)
+	{
+		GrabComp = GrabComp->IsActive() ? GrabComp : nullptr;
 	}
 }
 

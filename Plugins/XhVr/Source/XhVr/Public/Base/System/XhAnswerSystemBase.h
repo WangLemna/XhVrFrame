@@ -25,10 +25,10 @@ struct FQuesionLib
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FXhSet Answer;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	AXhDataActorBase* ExtraData;
+	FDAB_Struct ExtraData;
 	FQuesionLib()
 		:QuestionType(EQuestionType::One)
-		,ExtraData(nullptr)
+		,ExtraData(FDAB_Struct())
 	{
 	}
 };
@@ -41,7 +41,8 @@ class XHVR_API AXhAnswerSystemBase : public AActor
 public:	
 	// Sets default values for this actor's properties
 	AXhAnswerSystemBase();
-
+public:
+	int32 XhBeginOrder;
 public:
 	UPROPERTY(EditAnywhere,BlueprintReadWrite, Category = "XhVar|Settings")
 	TArray<FQuesionLib> QuestionLibs;

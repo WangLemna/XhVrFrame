@@ -15,20 +15,8 @@ AXhActorBase::AXhActorBase()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	XhBeginOrder = -1;
-	GrabComp = nullptr;
 	bCanOpera = false;
-}
-
-void AXhActorBase::XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhGrabStateEvent InGrabStateEvent /*= EXhGrabStateEvent::Max*/, const FName& SocketName /*= NAME_None*/, float DelayAttch /*= 0*/)
-{
-	if (GrabComp)
-	{
-		GrabComp->XhGrab(InMeshComp, InAttchParent, InGrabStateEvent, SocketName, DelayAttch);
-	}
-	else
-	{
-		UXhTool::WriteLog(this, TEXT("XhGrab:GrabComp无效！"));
-	}
+	XhActorId = TEXT_EMPTY;
 }
 
 bool AXhActorBase::GetCanOpera()
@@ -73,15 +61,8 @@ void AXhActorBase::ChangeCanOpera(bool InCanOpera)
 
 void AXhActorBase::XhNativeInit()
 {
-	GrabComp = GetComponentByClass<UXhGrabActorCompBase>();
-	if (GrabComp)
-	{
-		GrabComp = GrabComp->IsActive() ? GrabComp : nullptr;
-	}
-	//OnDestroyed.AddDynamic(this, &AXhActorBase::XhDestroyed);
-
-#pragma region 初始化变量
-	XhClassName = GetClass()->GetName().LeftChop(2);
+	//初始化变量
+	XhClassName = GetClass()->GetName().LeftChop(2);//xxxx_C -> xxxx
 	if (UWorld* World = GetWorld())
 	{
 		XhGameState = Cast<AXhGameState>(UGameplayStatics::GetGameState(World));
@@ -94,6 +75,10 @@ void AXhActorBase::XhNativeInit()
 				XhPlayerState = XhCharacter->GetPlayerState<AXhPlayerState>();
 				if (XhPlayerState)
 				{
+					if (XhActorId != TEXT_EMPTY)
+					{
+						XhPlayerState->XhActorsDataById.Add(XhActorId, this);
+					}
 					if (XhPlayerState->XhActorsData.Contains(XhClassName))
 					{
 						XhPlayerState->XhActorsData.Find(XhClassName)->XhActorBaseArray.AddUnique(this);
@@ -126,15 +111,8 @@ void AXhActorBase::XhNativeInit()
 	{
 		UXhTool::WriteLog(this, TEXT("XhNativeInit:XhPlayerState获取失败！"));
 	}
-#pragma endregion
-
 
 }
-
-//void AXhActorBase::XhDestroyed(AActor* DestroyedActor)
-//{
-//	ChangeCanOpera(false);
-//}
 
 // Called when the game starts or when spawned
 void AXhActorBase::BeginPlay()

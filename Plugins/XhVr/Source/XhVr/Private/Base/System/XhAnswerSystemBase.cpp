@@ -9,14 +9,15 @@ AXhAnswerSystemBase::AXhAnswerSystemBase()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	XhBeginOrder = -1;
 }
 
 // Called when the game starts or when spawned
 void AXhAnswerSystemBase::BeginPlay()
 {
+	XH_BP_EXEC_B(XhBegin);
 	Super::BeginPlay();
-	XhBegin();
+	XH_BP_EXEC_E(XhBegin);
 }
 
 void AXhAnswerSystemBase::NextQuestion_Implementation()

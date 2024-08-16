@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-//#include "../../../../../../../Source/Runtime/Engine/Classes/Engine/DataTable.h"
+
 #include "Engine/DataTable.h"
 #include "XhType.generated.h"
 
@@ -254,4 +254,25 @@ public:
 		return Name == B.Name && Transform.Equals(B.Transform,0.0001);
 	}
 };
+//DataActorBaseStruct
+USTRUCT(BlueprintType)
+struct FDAB_Struct
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FString Description;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	class AXhDataActorBase* DataActor;
+	FDAB_Struct()
+		:Description(TEXT(""))
+		,DataActor(nullptr)
+	{}
+	bool operator==(const FDAB_Struct B) const
+	{
+		return Description == B.Description && DataActor == B.DataActor;
+	}
+};
+
 

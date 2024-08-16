@@ -3,3 +3,7 @@
 
 #include "Base/GameBase/XhGameState.h"
 
+void AXhGameState::BeginPlay()
+{
+	Super::BeginPlay();
+}

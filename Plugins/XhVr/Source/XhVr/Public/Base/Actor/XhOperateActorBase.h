@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -23,6 +23,12 @@ public:
 	UPROPERTY(Category = "XhOperateActorBase", VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UXhGrabActorCompBase> GrabActorCompBase;
 
+protected:
+	UXhGrabActorCompBase* GrabComp;
+public:
+	//抓取
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "XhGrab"))
+	void XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhGrabStateEvent InGrabStateEvent = EXhGrabStateEvent::Max, const FName& SocketName = NAME_None, float DelayAttch = 0);
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "XhVar|Settings")
@@ -31,6 +37,7 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 	void InitGrab();
+	void XhNativeInit();
 public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

@@ -35,13 +35,13 @@ public:
 	//卸载抓取的mesh
 	UFUNCTION(BlueprintCallable)
 	void XhUnregisterGrabMeshComps(const TArray<UStaticMeshComponent*>& InMeshComps);
-	//设置mesh的抓取状态
+	//设置抓取mesh的状态
 	UFUNCTION(BlueprintCallable)
 	void XhSetGrabMeshCompState(UStaticMeshComponent* InMeshComp, EXhGrabState InXhGrabState);
-	//设置mesh的抓取状态
+	//设置抓取mesh的状态
 	UFUNCTION(BlueprintCallable)
 	void XhSetGrabMeshCompsState(const TArray<UStaticMeshComponent*>& InMeshComps, EXhGrabState InXhGrabState);
-	//得到mesh的抓取状态
+	//得到抓取mesh的状态
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	EXhGrabState XhGetGrabMeshCompState(UStaticMeshComponent* InMeshComp);
 	//判断是否可抓取
@@ -53,8 +53,6 @@ public:
 	void XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhGrabStateEvent InGrabStateEvent = EXhGrabStateEvent::Max, const FName& SocketName = NAME_None, float DelayAttch = 0);
 
 public:
-	//UPROPERTY(BlueprintReadWrite,EditAnywhere)
-	//TArray<EXhGrabState> CanGrabState;
 	//下一个状态的Map，记录所有的状态事件
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	TMap<FGrabAndHandState, EXhGrabState> NextGrabStateMap;
