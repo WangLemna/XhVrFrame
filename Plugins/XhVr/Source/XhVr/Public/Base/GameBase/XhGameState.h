@@ -6,6 +6,9 @@
 #include "GameFramework/GameState.h"
 #include "XhGameState.generated.h"
 
+class AXhGameMode;
+class AXhCharacter;
+class UXhGameInstance;
 /**
  * 
  */
@@ -13,6 +16,23 @@ UCLASS()
 class XHVR_API AXhGameState : public AGameState
 {
 	GENERATED_BODY()
+
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
+	AXhGameMode* XhGameMode;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
+	AXhCharacter* XhCharacter;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
+	UXhGameInstance* XhGameInstance;
+public:
+	TMap<FString, FTransform> ActorTransform;
+
+public:
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "GetXhActorTransform"))
+	FTransform GetXhActorTransform(const FString& InName);
+public:
+	void XhNativeInit();
 
 protected:
 	/** Overridable native event for when play begins for this actor. */

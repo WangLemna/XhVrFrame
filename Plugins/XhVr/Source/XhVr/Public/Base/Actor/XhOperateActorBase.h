@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Interface/IXhOculusEvent.h"
+#include "Base/Actor/XhActorBase.h"
 #include "XhOperateActorBase.generated.h"
 
 class UXhGrabActorCompBase;
@@ -20,7 +21,7 @@ public:
 public:
 	//XhRegisterGrabMeshComps()
 	//LeftGrabCollisionComps  RightGrabCollisionComps
-	UPROPERTY(Category = "XhOperateActorBase", VisibleAnywhere, BlueprintReadWrite)
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
 	TObjectPtr<UXhGrabActorCompBase> GrabActorCompBase;
 
 protected:
@@ -28,7 +29,7 @@ protected:
 public:
 	//抓取
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "XhGrab"))
-	void XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhGrabStateEvent InGrabStateEvent = EXhGrabStateEvent::Max, const FName& SocketName = NAME_None, float DelayAttch = 0);
+	void XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhGrabStateEvent InGrabStateEvent = EXhGrabStateEvent::Max, const FName SocketName = NAME_None, float DelayAttch = 0);
 
 public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "XhVar|Settings")

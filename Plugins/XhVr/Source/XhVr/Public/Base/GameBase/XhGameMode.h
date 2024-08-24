@@ -24,8 +24,8 @@ public:
 	bool bDebug;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings")
 	UDataTable* DT_ActorTransform;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings")
-	TArray<FActorTransform> ActorTransform;
+	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings")
+	//TArray<FActorTransform*> ActorTransform;
 protected:
 	/** Overridable native event for when play begins for this actor. */
 	virtual void BeginPlay() override;

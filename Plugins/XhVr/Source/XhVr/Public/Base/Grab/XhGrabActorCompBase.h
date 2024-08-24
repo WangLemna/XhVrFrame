@@ -50,8 +50,13 @@ public:
 
 	//抓取
 	UFUNCTION(BlueprintCallable)
-	void XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhGrabStateEvent InGrabStateEvent = EXhGrabStateEvent::Max, const FName& SocketName = NAME_None, float DelayAttch = 0);
-
+	void XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhGrabStateEvent InGrabStateEvent = EXhGrabStateEvent::Max, const FName SocketName = NAME_None, float DelayAttch = 0);
+	
+	//
+	UFUNCTION()
+	void XhNativeBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+	UFUNCTION()
+	void XhNativeEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 public:
 	//下一个状态的Map，记录所有的状态事件
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
@@ -74,8 +79,6 @@ public:
 public:
 	//抓取结束
 	void XhGrabEnd(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, const FName SocketName);
-	void XhNativeBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
-	void XhNativeEndOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
 	//将mesh变为下一个状态
 	EXhGrabState NextGrabeState(UStaticMeshComponent* InMeshComp, FGrabAndHandState InGrabAndHandState);
 	//获取mesh的下一个状态

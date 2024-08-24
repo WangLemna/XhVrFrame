@@ -87,5 +87,6 @@ void AXhGameMode::BeginPlay()
 			InitLog();
 		}
 	}
+	//DT_ActorTransform->GetAllRows<FActorTransform>(TEXT(""), ActorTransform);
 }
 

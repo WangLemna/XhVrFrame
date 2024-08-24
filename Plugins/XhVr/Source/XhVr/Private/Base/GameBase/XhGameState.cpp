@@ -2,8 +2,36 @@
 
 
 #include "Base/GameBase/XhGameState.h"
+#include "Base/GameBase/XhGameMode.h"
+#include "Base/GameBase/XhCharacter.h"
+#include "Kismet/GameplayStatics.h"
+
+FTransform AXhGameState::GetXhActorTransform(const FString& InName)
+{
+	return ActorTransform[InName];
+}
+
+void AXhGameState::XhNativeInit()
+{
+	XhGameMode = Cast<AXhGameMode>(GetWorld()->GetAuthGameMode());
+	if (XhGameMode && XhGameMode->DT_ActorTransform)
+	{
+		TArray<FActorTransform*> ActorTransformData;
+		XhGameMode->DT_ActorTransform->GetAllRows<FActorTransform>(TEXT(""), ActorTransformData);
+		for (auto& Temp : ActorTransformData)
+		{
+			ActorTransform.Add(Temp->Name, Temp->Transform);
+		}
+	}
+	if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+	{
+		XhCharacter = Cast<AXhCharacter>(PC->GetPawn());
+	}
+	XhGameInstance = Cast<UXhGameInstance>(GetWorld()->GetGameInstance());
+}
 
 void AXhGameState::BeginPlay()
 {
 	Super::BeginPlay();
+	XhNativeInit();
 }

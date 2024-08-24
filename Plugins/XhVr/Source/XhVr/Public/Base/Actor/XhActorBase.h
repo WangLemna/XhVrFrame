@@ -54,6 +54,18 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "GetCanOpera"))
 	bool GetCanOpera();
 
+	//通过ID得到XhActorBase
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "GetXhActorById"))
+	AXhActorBase* GetXhActorById(const FString& InId);
+
+	//通过ClassName得到XhActorBase数组
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "GetXhActorsByClassName"))
+	TArray<AXhActorBase*> GetXhActorsByClassName(const FString& InClassName);
+
+	//获取Actor的Transfrom，配置在XhGameMode中的DT_ActorTransform
+	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "GetXhActorTransform"))
+	FTransform GetXhActorTransform(const FString& InName);
+
 	//销毁
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "XhDestroy"))
 	void XhDestroy();

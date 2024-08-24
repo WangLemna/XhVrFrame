@@ -254,6 +254,7 @@ public:
 		return Name == B.Name && Transform.Equals(B.Transform,0.0001);
 	}
 };
+
 //DataActorBaseStruct
 USTRUCT(BlueprintType)
 struct FDAB_Struct
@@ -274,5 +275,32 @@ public:
 		return Description == B.Description && DataActor == B.DataActor;
 	}
 };
-
-
+// 
+// //XhActorBaseStruct
+// USTRUCT(BlueprintType)
+// struct FXAB_Struct
+// {
+// 	GENERATED_USTRUCT_BODY()
+// 
+// public:
+// 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+// 	FString ID;
+// 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+// 	class AXhDataActorBase* DataActor;
+// 	FXAB_Struct()
+// 		:ID(TEXT(""))
+// 		, DataActor(nullptr)
+// 	{}
+// 	FXAB_Struct(AXhDataActorBase* InDataActor)
+// 		:ID(TEXT(""))
+// 		, DataActor(InDataActor)
+// 	{}
+// 	FXAB_Struct(const FString& InID, AXhDataActorBase* InDataActor)
+// 		:ID(InID)
+// 		, DataActor(InDataActor)
+// 	{}
+// 	bool operator==(const FXAB_Struct B) const
+// 	{
+// 		return ID == B.ID && DataActor == B.DataActor;
+// 	}
+// };

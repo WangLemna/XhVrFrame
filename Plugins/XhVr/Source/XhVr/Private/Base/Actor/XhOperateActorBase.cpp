@@ -14,7 +14,7 @@ AXhOperateActorBase::AXhOperateActorBase()
 	GrabComp = nullptr;
 }
 
-void AXhOperateActorBase::XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhGrabStateEvent InGrabStateEvent /*= EXhGrabStateEvent::Max*/, const FName& SocketName /*= NAME_None*/, float DelayAttch /*= 0*/)
+void AXhOperateActorBase::XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhGrabStateEvent InGrabStateEvent /*= EXhGrabStateEvent::Max*/, const FName SocketName /*= NAME_None*/, float DelayAttch /*= 0*/)
 {
 	if (GrabComp)
 	{
@@ -46,6 +46,7 @@ void AXhOperateActorBase::InitGrab()
 		TArray<UStaticMeshComponent*> OutStaticMeshes;
 		GetComponents(UStaticMeshComponent::StaticClass(), OutStaticMeshes);
 		GrabActorCompBase->XhRegisterGrabMeshComps(OutStaticMeshes);
+		GrabComp = GrabActorCompBase;
 	}
 	else
 	{

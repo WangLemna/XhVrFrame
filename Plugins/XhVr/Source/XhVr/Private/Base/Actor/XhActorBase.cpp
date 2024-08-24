@@ -24,6 +24,30 @@ bool AXhActorBase::GetCanOpera()
 	return bCanOpera;
 }
 
+AXhActorBase* AXhActorBase::GetXhActorById(const FString& InId)
+{
+	if (XhPlayerState)
+	{
+		return XhPlayerState->GetXhActorById(InId);
+	}
+	return nullptr;
+}
+
+TArray<AXhActorBase*> AXhActorBase::GetXhActorsByClassName(const FString& InClassName)
+{
+	TArray<AXhActorBase*> Results;
+	if (XhPlayerState)
+	{
+		return XhPlayerState->GetXhActorsByClassName(InClassName);
+	}
+	return Results;
+}
+
+FTransform AXhActorBase::GetXhActorTransform(const FString& InName)
+{
+	return XhGameState->GetXhActorTransform(InName);
+}
+
 void AXhActorBase::XhDestroy()
 {
 	if(IsValid(this))

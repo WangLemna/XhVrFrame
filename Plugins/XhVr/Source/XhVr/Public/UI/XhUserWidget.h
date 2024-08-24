@@ -28,7 +28,7 @@ public:
 	TArray<UXhButton*> ButtonChildren;
 public:
 	/** XhUserWidget */
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar")
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Base")
 	AXhWidgetActor* XhWidgetActor;
 
 	UFUNCTION(BlueprintImplementableEvent)

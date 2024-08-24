@@ -32,22 +32,28 @@ public:
 	//B
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
 	void OculusB(EButtonEvent InButtonEvent);
-	////左摇杆
-	//UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
-	//void OculusJoystickL(EButtonEvent InButtonEvent);
-	////右摇杆
-	//UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
-	//void OculusJoystickR(EButtonEvent InButtonEvent);
-	//左扳机
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
-	void OculusTriggerL(EButtonEvent InButtonEvent);
-	//右扳机
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
-	void OculusTriggerR(EButtonEvent InButtonEvent);
 	//X
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
 	void OculusX(EButtonEvent InButtonEvent);
 	//Y
 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
 	void OculusY(EButtonEvent InButtonEvent);
+	//左摇杆
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
+	void OculusJoystickL(EButtonEvent InButtonEvent);
+	//右摇杆
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
+	void OculusJoystickR(EButtonEvent InButtonEvent);
+	//左手握
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
+	void OculusGripL(EButtonEvent InButtonEvent);
+	//右手握
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
+	void OculusGripR(EButtonEvent InButtonEvent);
+	//左扳机
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
+	void OculusTriggerL(EButtonEvent InButtonEvent);
+	//右扳机
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
+	void OculusTriggerR(EButtonEvent InButtonEvent);
 };
