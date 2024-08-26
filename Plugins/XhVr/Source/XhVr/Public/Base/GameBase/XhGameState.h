@@ -25,6 +25,9 @@ public:
 	AXhCharacter* XhCharacter;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
 	UXhGameInstance* XhGameInstance;
+
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
+	//UXhGameInstance* XhPlayState;
 public:
 	TMap<FString, FTransform> ActorTransform;
 

@@ -73,6 +73,9 @@ public:
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "DosCmd"), Category = "XhTool|Tool")
 	static void DosCmd(const FString& CmdString);
 
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "GetCPU_Info"), Category = "XhTool|Tool")
+	FString GetCPU_Info();
+
 	UFUNCTION(BlueprintPure, meta = (Keywords = "GetMac"), Category = "XhTool|Tool")
 	static FString GetMac();
 
@@ -146,6 +149,8 @@ public:
 #pragma endregion
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "WriteLog", WorldContext = "WorldContextObject"), Category = "XhTool|XhLog")
 	static void WriteLog(const UObject* WorldContextObject, const FString& InStringLog, bool bScreen = true);
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "PrintLog"), Category = "XhTool|XhLog")
+	static void PrintLog(const FString& InStringLog);
 };
 
 

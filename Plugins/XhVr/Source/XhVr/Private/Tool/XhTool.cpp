@@ -55,12 +55,20 @@ void UXhTool::DosCmd(const FString& CmdString)
 #endif
 }
 
+FString UXhTool::GetCPU_Info()
+{
+#if PLATFORM_WINDOWS
+	return FString::FromInt(FWindowsPlatformMisc::GetCPUInfo());
+#else
+	return "";
+#endif
+}
+
 FString UXhTool::GetMac()
 {
 #if PLATFORM_WINDOWS
-	//return FGenericPlatformMisc::GetMacAddressString();
-	//return FGenericPlatformMisc::GetCPUInfo();
-	return FGenericPlatformMisc::GetDeviceId();
+	//FGenericPlatformMisc::GetLoginID();
+	return FBase64::Encode(FWindowsPlatformMisc::GetMacAddress(), EBase64Mode::Standard);
 #else
 	return "";
 #endif
@@ -296,5 +304,11 @@ void UXhTool::WriteLog(const UObject* WorldContextObject, const FString& InStrin
 		UE_LOG(LogTemp, Error, TEXT("%s"), *StringLog);
 		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, StringLog);
 	}
+}
+
+void UXhTool::PrintLog(const FString& InStringLog)
+{
+	UE_LOG(LogTemp, Error, TEXT("%s"), *InStringLog);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, InStringLog);
 }
 

@@ -30,4 +30,7 @@ public:
 	TArray<AXhActorBase*> GetXhActorsByClassName(const FString& InClassName);
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	AXhActorBase* GetXhActorById(const FString& InId);
+
+public:
+	TArray<AXhActorBase*> GetXhActors(const FString& InId, const FString& InClassName, FName InTagName);
 };

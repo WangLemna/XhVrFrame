@@ -104,6 +104,53 @@ enum class EXhGrabStateEvent : uint8
 	Max UMETA(DisplayName = "None"),
 };
 
+static FString EnumToString(EXhGrabStateEvent InValue)
+{
+#if WITH_EDITORONLY_DATA
+	return FString::Printf(TEXT("%s"), *UEnum::GetDisplayValueAsText(InValue).ToString());
+#endif
+	FString Str;
+	switch (InValue)
+	{
+	case EXhGrabStateEvent::None:
+		Str = TEXT("未发生事件");
+		break;
+	case EXhGrabStateEvent::E_LeftOverlap_S:
+		Str = TEXT("左手触碰事件开始");
+		break;
+	case EXhGrabStateEvent::E_LeftOverlap_E:
+		Str = TEXT("左手触碰事件结束");
+		break;
+	case EXhGrabStateEvent::E_RightOverlap_S:
+		Str = TEXT("右手触碰事件开始");
+		break;
+	case EXhGrabStateEvent::E_RightOverlap_E:
+		Str = TEXT("右手触碰事件结束");
+		break;
+	case EXhGrabStateEvent::E_LeftGrab_S:
+		Str = TEXT("左手拿起事件开始");
+		break;
+	case EXhGrabStateEvent::E_LeftGrab_E:
+		Str = TEXT("左手拿起事件结束");
+		break;
+	case EXhGrabStateEvent::E_RightGrab_S:
+		Str = TEXT("右手拿起事件开始");
+		break;
+	case EXhGrabStateEvent::E_RightGrab_E:
+		Str = TEXT("右手拿起事件结束");
+		break;
+	case EXhGrabStateEvent::E_Drop:
+		Str = TEXT("扔下事件");
+		break;
+	case EXhGrabStateEvent::Max:
+		Str = TEXT("None");
+		break;
+	default:
+		break;
+	}
+	return Str;
+}
+
 UENUM(BlueprintType)
 enum class EXhGrabState : uint8
 {
@@ -119,6 +166,55 @@ enum class EXhGrabState : uint8
 	RightGrabbing UMETA(DisplayName = "右手正在拿起中"),
 	Max UMETA(DisplayName = "None"),
 };
+
+
+static FString EnumToString(EXhGrabState InValue)
+{
+#if WITH_EDITORONLY_DATA
+	return FString::Printf(TEXT("%s"), *UEnum::GetDisplayValueAsText(InValue).ToString());
+#endif
+	FString Str;
+	switch (InValue)
+	{
+	case EXhGrabState::None:
+		Str = TEXT("未触碰");
+		break;
+	case EXhGrabState::LeftOverlap:
+		Str = TEXT("左手已触碰");
+		break;
+	case EXhGrabState::RightOverlap:
+		Str = TEXT("右手已触碰");
+		break;
+	case EXhGrabState::AllOverlap:
+		Str = TEXT("左右手都已触碰");
+		break;
+	case EXhGrabState::LeftGrab:
+		Str = TEXT("左手已拿起");
+		break;
+	case EXhGrabState::RightGrab:
+		Str = TEXT("右手已拿起");
+		break;
+	case EXhGrabState::LeftGrabRightOverlap:
+		Str = TEXT("左手已拿起，右手已触碰");
+		break;
+	case EXhGrabState::RightGrabLeftOverlap:
+		Str = TEXT("右手已拿起，左手已触碰");
+		break;
+	case EXhGrabState::LeftGrabbing:
+		Str = TEXT("左手正在拿起中");
+		break;
+	case EXhGrabState::RightGrabbing:
+		Str = TEXT("右手正在拿起中");
+		break;
+	case EXhGrabState::Max:
+		Str = TEXT("None");
+		break;
+	default:
+		break;
+	}
+	return Str;
+}
+
 
 USTRUCT(BlueprintType)
 struct FGrabAndHandState

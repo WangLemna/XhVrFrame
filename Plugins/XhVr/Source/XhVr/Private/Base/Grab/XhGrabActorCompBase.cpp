@@ -59,49 +59,6 @@ UXhGrabActorCompBase::UXhGrabActorCompBase()
 
 }
 
-
-static FString EnumToString(EXhGrabState InValue)
-{
-	switch (InValue)
-	{
-	case EXhGrabState::None:
-		TEXT("None");
-		break;
-	case EXhGrabState::LeftOverlap:
-		TEXT("LeftOverlap");
-		break;
-	case EXhGrabState::RightOverlap:
-		TEXT("RightOverlap");
-		break;
-	case EXhGrabState::AllOverlap:
-		TEXT("AllOverlap");
-		break;
-	case EXhGrabState::LeftGrab:
-		TEXT("LeftGrab");
-		break;
-	case EXhGrabState::RightGrab:
-		TEXT("RightGrab");
-		break;
-	case EXhGrabState::LeftGrabRightOverlap:
-		TEXT("LeftGrabRightOverlap");
-		break;
-	case EXhGrabState::RightGrabLeftOverlap:
-		TEXT("RightGrabLeftOverlap");
-		break;
-	case EXhGrabState::LeftGrabbing:
-		TEXT("LeftGrabbing");
-		break;
-	case EXhGrabState::RightGrabbing:
-		TEXT("RightGrabbing");
-		break;
-	case EXhGrabState::Max:
-		TEXT("Max");
-		break;
-	default:
-		break;
-	}
-}
-
 void UXhGrabActorCompBase::XhRegisterGrabMeshComp(UStaticMeshComponent* InMeshComp)
 {
 	GrabMeshComps.AddUnique(InMeshComp);
@@ -180,10 +137,8 @@ void UXhGrabActorCompBase::XhGrab(UStaticMeshComponent* InMeshComp, USceneCompon
 	}
 	else
 	{
-		//EnumToString()
-		FString StringLog = FString::Printf(TEXT("无法抓取，因为当前状态为%s"), *EnumToString(XhGetGrabMeshCompState(InMeshComp)));
-		UE_LOG(LogTemp, Error, TEXT("%s"), *StringLog);
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, StringLog);
+		FString StringLog = FString::Printf(TEXT("无法抓取，当前状态为【%s】，发生的事件为【%s】"), *EnumToString(XhGetGrabMeshCompState(InMeshComp)), *EnumToString(InGrabStateEvent));
+		UXhTool::PrintLog(StringLog);
 	}
 }
 

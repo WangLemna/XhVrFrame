@@ -34,7 +34,7 @@ public:
 	AXhCharacter* XhCharacter;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
 	FString XhClassName;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base", meta = (ExposeOnSpawn = "true"))
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Setting", meta = (ExposeOnSpawn = "true"))
 	FString XhActorId;
 
 
@@ -47,8 +47,8 @@ public:
 	void XhStart();
 
 	//动画通知的XhManual
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, meta = (Keywords = "XhManual"))
-	void XhManual();
+// 	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, meta = (Keywords = "XhManual"))
+// 	void XhManual();
 
 	//能否被操作
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "GetCanOpera"))

@@ -45,7 +45,11 @@ TArray<AXhActorBase*> AXhActorBase::GetXhActorsByClassName(const FString& InClas
 
 FTransform AXhActorBase::GetXhActorTransform(const FString& InName)
 {
-	return XhGameState->GetXhActorTransform(InName);
+	if (XhGameState)
+	{
+		return XhGameState->GetXhActorTransform(InName);
+	}
+	return FTransform();
 }
 
 void AXhActorBase::XhDestroy()
