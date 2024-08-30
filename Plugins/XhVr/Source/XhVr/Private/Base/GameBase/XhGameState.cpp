@@ -3,12 +3,16 @@
 
 #include "Base/GameBase/XhGameState.h"
 #include "Base/GameBase/XhGameMode.h"
-#include "Base/GameBase/XhCharacter.h"
+//#include "Base/GameBase/XhCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
 FTransform AXhGameState::GetXhActorTransform(const FString& InName)
 {
-	return ActorTransform[InName];
+	if (ActorsTransform.Contains(InName))
+	{
+		return ActorsTransform[InName];
+	}
+	return FTransform();
 }
 
 void AXhGameState::XhNativeInit()
@@ -20,18 +24,20 @@ void AXhGameState::XhNativeInit()
 		XhGameMode->DT_ActorTransform->GetAllRows<FActorTransform>(TEXT(""), ActorTransformData);
 		for (auto& Temp : ActorTransformData)
 		{
-			ActorTransform.Add(Temp->Name, Temp->Transform);
+			ActorsTransform.Add(Temp->Name, Temp->Transform);
 		}
 	}
-	if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
-	{
-		XhCharacter = Cast<AXhCharacter>(PC->GetPawn());
-	}
+// 	if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
+// 	{
+// 		XhCharacter = Cast<AXhCharacter>(PC->GetPawn());
+// 	}
 	XhGameInstance = Cast<UXhGameInstance>(GetWorld()->GetGameInstance());
 }
 
 void AXhGameState::BeginPlay()
 {
+	XH_BP_EXEC_B(XhBegin);
 	Super::BeginPlay();
 	XhNativeInit();
+	XH_BP_EXEC_E(XhBegin);
 }

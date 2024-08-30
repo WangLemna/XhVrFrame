@@ -6,6 +6,8 @@
 #include "GameFramework/GameMode.h"
 #include "XhGameMode.generated.h"
 
+class UXhVrSettings;
+
 /**
  * 
  */
@@ -18,6 +20,7 @@ public:
 	void InitLog();
 public:
 	UXhVrSettings* XhVrSettings;
+	int32 XhBeginOrder;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Debug")
 	bool bEnableKB;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Debug")
@@ -26,6 +29,9 @@ public:
 	UDataTable* DT_ActorTransform;
 	//UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Settings")
 	//TArray<FActorTransform*> ActorTransform;
+protected:
+	UFUNCTION(BlueprintImplementableEvent, meta = (Keywords = "XhBegin"))
+	void XhBegin();
 protected:
 	/** Overridable native event for when play begins for this actor. */
 	virtual void BeginPlay() override;

@@ -7,8 +7,6 @@
 #include "Type/XhCore.h"
 #include "XhGrabActorCompBase.generated.h"
 
-class AXhCharacter;
-
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class XHVR_API UXhGrabActorCompBase : public UActorComponent
@@ -44,13 +42,20 @@ public:
 	//得到抓取mesh的状态
 	UFUNCTION(BlueprintCallable, BlueprintPure)
 	EXhGrabState XhGetGrabMeshCompState(UStaticMeshComponent* InMeshComp);
+	//得到抓取mesh的上一次状态
+	UFUNCTION(BlueprintCallable, BlueprintPure)
+	EXhGrabState XhGetGrabMeshCompLastState(UStaticMeshComponent* InMeshComp);
 	//判断是否可抓取
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	bool XhCanGrab(UStaticMeshComponent* InMeshComp, EXhGrabStateEvent InGrabStateEvent = EXhGrabStateEvent::Max);
 
 	//抓取
-	UFUNCTION(BlueprintCallable)
-	void XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhGrabStateEvent InGrabStateEvent = EXhGrabStateEvent::Max, const FName SocketName = NAME_None, float DelayAttch = 0);
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "XhGrab"))
+	void XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhHand InHand = EXhHand::Max, const FName SocketName = NAME_None, float DelayAttch = 0);
+
+	//扔下
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "XhDrop"))
+	void XhDrop(UStaticMeshComponent* InMeshComp);
 	
 	//
 	UFUNCTION()

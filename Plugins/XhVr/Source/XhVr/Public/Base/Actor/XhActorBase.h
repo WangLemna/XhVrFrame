@@ -25,15 +25,15 @@ public:
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
-	AXhGameState* XhGameState;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
-	AXhPlayerController* XhPlayerController;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
-	AXhPlayerState* XhPlayerState;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
-	AXhCharacter* XhCharacter;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
 	FString XhClassName;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|BlueprintChange")
+	AXhGameState* XhGameState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|BlueprintChange")
+	AXhPlayerController* XhPlayerController;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|BlueprintChange")
+	AXhPlayerState* XhPlayerState;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|BlueprintChange")
+	AXhCharacter* XhCharacter;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Setting", meta = (ExposeOnSpawn = "true"))
 	FString XhActorId;
 
@@ -78,7 +78,7 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, meta = (Keywords = "XhBegin"))
 	void XhBegin();
 protected:
-	void XhNativeInit();
+	virtual void XhNativeInit();
 	//void XhDestroyed(AActor* DestroyedActor);
 public:
 

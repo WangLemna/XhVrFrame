@@ -15,6 +15,7 @@ AXhGameMode::AXhGameMode()
 	PlayerStateClass = AXhPlayerState::StaticClass();
 	DefaultPawnClass = AXhCharacter::StaticClass();
 	XhVrSettings = GetMutableDefault<UXhVrSettings>();
+	XhBeginOrder = -1;
 }
 
 void AXhGameMode::InitLog()
@@ -67,6 +68,7 @@ void AXhGameMode::InitLog()
 
 void AXhGameMode::BeginPlay()
 {
+	XH_BP_EXEC_B(XhBegin);
 	Super::BeginPlay();
 	if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
 	{
@@ -88,5 +90,6 @@ void AXhGameMode::BeginPlay()
 		}
 	}
 	//DT_ActorTransform->GetAllRows<FActorTransform>(TEXT(""), ActorTransform);
+	XH_BP_EXEC_E(XhBegin);
 }
 

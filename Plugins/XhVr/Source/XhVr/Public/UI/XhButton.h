@@ -174,6 +174,7 @@ public:
 
 #if WITH_EDITOR
 	virtual const FText GetPaletteCategory() override;
+	const FString& GetDisplayLabel() const;
 #endif
 
 
@@ -184,7 +185,6 @@ protected:
 	virtual void OnSlotAdded(UPanelSlot* Slot) override;
 	virtual void OnSlotRemoved(UPanelSlot* Slot) override;
 	// End UPanelWidget
-
 protected:
 	/** Handle the actual click event from slate and forward it on */
 	FReply SlateHandleClicked();
@@ -209,7 +209,6 @@ protected:
 public:
 	float LastClickTime;
 	bool bIsUpdateTime;
-
 protected:
 	/** Cached pointer to the underlying slate button owned by this UWidget */
 	TSharedPtr<SButton> MyButton;

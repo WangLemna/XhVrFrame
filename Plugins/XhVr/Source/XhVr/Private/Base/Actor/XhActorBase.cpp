@@ -155,9 +155,13 @@ void AXhActorBase::BeginPlay()
 
 void AXhActorBase::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	if (XhPlayerState && bCanOpera)
+	if (XhPlayerState)
 	{
-		XhPlayerState->XhOperaActors.Remove(this);
+		XhPlayerState->XhActorsData[XhClassName].XhActorBaseArray.Remove(this);
+		if (bCanOpera)
+		{
+			XhPlayerState->XhOperaActors.Remove(this);
+		}
 	}
 	Super::EndPlay(EndPlayReason);
 }

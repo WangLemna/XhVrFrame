@@ -64,7 +64,7 @@ enum class EXhHand : uint8
 	None UMETA(DisplayName = "无"),
 	L_Hand UMETA(DisplayName = "左手"),
 	R_Hand UMETA(DisplayName = "右手"),
-	Max UMETA(DisplayName = ""),
+	Max UMETA(DisplayName = "None"),
 };
 #pragma endregion
 

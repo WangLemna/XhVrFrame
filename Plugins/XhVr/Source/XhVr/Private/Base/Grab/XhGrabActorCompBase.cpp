@@ -119,11 +119,36 @@ EXhGrabState UXhGrabActorCompBase::XhGetGrabMeshCompState(UStaticMeshComponent* 
 	return EXhGrabState::Max;
 }
 
-void UXhGrabActorCompBase::XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhGrabStateEvent InGrabStateEvent /*= EXhGrabStateEvent::Max*/, const FName SocketName /*= NAME_None*/, float DelayAttch /*= 0*/)
+EXhGrabState UXhGrabActorCompBase::XhGetGrabMeshCompLastState(UStaticMeshComponent* InMeshComp)
 {
-	if (XhCanGrab(InMeshComp, InGrabStateEvent))
+	if (GrabMeshComps.Contains(InMeshComp))
 	{
-		NextGrabeState(InMeshComp, FGrabAndHandState(MeshCompsCurrentGrabState[InMeshComp], InGrabStateEvent));
+		return MeshCompsLastGrabState[InMeshComp];
+	}
+	return EXhGrabState::Max;
+}
+
+void UXhGrabActorCompBase::XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhHand InHand /*= EXhHand::Max*/, const FName SocketName /*= NAME_None*/, float DelayAttch /*= 0*/)
+{
+	EXhGrabStateEvent GrabStateEvent = EXhGrabStateEvent::Max;
+	switch (InHand)
+	{
+	case EXhHand::None:
+		break;
+	case EXhHand::L_Hand:
+		GrabStateEvent = EXhGrabStateEvent::E_LeftGrab_S;
+		break;
+	case EXhHand::R_Hand:
+		GrabStateEvent = EXhGrabStateEvent::E_RightGrab_S;
+		break;
+	case EXhHand::Max:
+		break;
+	default:
+		break;
+	}
+	if (XhCanGrab(InMeshComp, GrabStateEvent))
+	{
+		NextGrabeState(InMeshComp, FGrabAndHandState(XhGetGrabMeshCompState(InMeshComp), GrabStateEvent));
 		if (DelayAttch <= 0)
 		{
 			XhGrabEnd(InMeshComp, InAttchParent, SocketName);
@@ -137,7 +162,21 @@ void UXhGrabActorCompBase::XhGrab(UStaticMeshComponent* InMeshComp, USceneCompon
 	}
 	else
 	{
-		FString StringLog = FString::Printf(TEXT("无法抓取，当前状态为【%s】，发生的事件为【%s】"), *EnumToString(XhGetGrabMeshCompState(InMeshComp)), *EnumToString(InGrabStateEvent));
+		FString StringLog = FString::Printf(TEXT("无法抓取，【%s】当前状态为【%s】，发生的事件为【%s】！"), *InMeshComp->GetName(), *EnumToString(XhGetGrabMeshCompState(InMeshComp)), *EnumToString(GrabStateEvent));
+		UXhTool::PrintLog(StringLog);
+	}
+}
+
+void UXhGrabActorCompBase::XhDrop(UStaticMeshComponent* InMeshComp)
+{
+	if (GetNextGrabeState(FGrabAndHandState(XhGetGrabMeshCompState(InMeshComp), EXhGrabStateEvent::E_Drop)) != EXhGrabState::Max)
+	{
+		NextGrabeState(InMeshComp, FGrabAndHandState(XhGetGrabMeshCompState(InMeshComp), EXhGrabStateEvent::E_Drop));
+		InMeshComp->DetachFromComponent(FDetachmentTransformRules::KeepWorldTransform);
+	}
+	else
+	{
+		FString StringLog = FString::Printf(TEXT("无法扔下，【%s】当前状态为【%s】！"), *InMeshComp->GetName(), *EnumToString(XhGetGrabMeshCompState(InMeshComp)));
 		UXhTool::PrintLog(StringLog);
 	}
 }
@@ -146,28 +185,28 @@ void UXhGrabActorCompBase::XhGrabEnd(UStaticMeshComponent* InMeshComp, USceneCom
 {
 	InMeshComp->AttachToComponent(InAttchParent, FAttachmentTransformRules::SnapToTargetNotIncludingScale, SocketName);
 	EXhGrabStateEvent GrabEndEvent = EXhGrabStateEvent::Max;
-	if (MeshCompsCurrentGrabState[InMeshComp] == EXhGrabState::LeftGrabbing)
+	if (XhGetGrabMeshCompState(InMeshComp) == EXhGrabState::LeftGrabbing)
 	{
 		GrabEndEvent = EXhGrabStateEvent::E_LeftGrab_E;
 	}
-	else if (MeshCompsCurrentGrabState[InMeshComp] == EXhGrabState::RightGrabbing)
+	else if (XhGetGrabMeshCompState(InMeshComp) == EXhGrabState::RightGrabbing)
 	{
 		GrabEndEvent = EXhGrabStateEvent::E_RightGrab_E;
 	}
-	NextGrabeState(InMeshComp, FGrabAndHandState(MeshCompsCurrentGrabState[InMeshComp], GrabEndEvent));
+	NextGrabeState(InMeshComp, FGrabAndHandState(XhGetGrabMeshCompState(InMeshComp), GrabEndEvent));
 }
 
 bool UXhGrabActorCompBase::XhCanGrab_Implementation(UStaticMeshComponent* InMeshComp, EXhGrabStateEvent InGrabStateEvent/* = EXhGrabStateEvent::Max*/)
 {
 	if (InGrabStateEvent == EXhGrabStateEvent::Max)
 	{
-		EXhGrabState LeftGrab = GetNextGrabeState(FGrabAndHandState(MeshCompsCurrentGrabState[InMeshComp], EXhGrabStateEvent::E_LeftGrab_S));
-		EXhGrabState RightGrab = GetNextGrabeState(FGrabAndHandState(MeshCompsCurrentGrabState[InMeshComp], EXhGrabStateEvent::E_RightGrab_S));
+		EXhGrabState LeftGrab = GetNextGrabeState(FGrabAndHandState(XhGetGrabMeshCompState(InMeshComp), EXhGrabStateEvent::E_LeftGrab_S));
+		EXhGrabState RightGrab = GetNextGrabeState(FGrabAndHandState(XhGetGrabMeshCompState(InMeshComp), EXhGrabStateEvent::E_RightGrab_S));
 		return LeftGrab == EXhGrabState::LeftGrabbing || RightGrab == EXhGrabState::RightGrabbing;
 	}
 	else
 	{
-		EXhGrabState Grab = GetNextGrabeState(FGrabAndHandState(MeshCompsCurrentGrabState[InMeshComp], InGrabStateEvent));
+		EXhGrabState Grab = GetNextGrabeState(FGrabAndHandState(XhGetGrabMeshCompState(InMeshComp), InGrabStateEvent));
 		return Grab == EXhGrabState::LeftGrabbing || Grab == EXhGrabState::RightGrabbing;
 	}
 }
@@ -187,7 +226,7 @@ void UXhGrabActorCompBase::XhNativeBeginOverlap(UPrimitiveComponent* OverlappedC
 			{
 				XhGrabStateEvent = EXhGrabStateEvent::E_RightOverlap_S;
 			}
-			NextGrabeState(SM, FGrabAndHandState(*MeshCompsCurrentGrabState.Find(SM), XhGrabStateEvent));
+			NextGrabeState(SM, FGrabAndHandState(XhGetGrabMeshCompState(SM), XhGrabStateEvent));
 		}
 	}
 }
@@ -207,26 +246,26 @@ void UXhGrabActorCompBase::XhNativeEndOverlap(UPrimitiveComponent* OverlappedCom
 			{
 				XhGrabStateEvent = EXhGrabStateEvent::E_RightOverlap_E;
 			}
-			NextGrabeState(SM, FGrabAndHandState(*MeshCompsCurrentGrabState.Find(SM), XhGrabStateEvent));
+			NextGrabeState(SM, FGrabAndHandState(XhGetGrabMeshCompState(SM), XhGrabStateEvent));
 		}
 	}
 }
 
 EXhGrabState UXhGrabActorCompBase::NextGrabeState(UStaticMeshComponent* InMeshComp, FGrabAndHandState InGrabAndHandState)
 {
-	if (NextGrabStateMap.Contains(InGrabAndHandState))
+	if (GrabMeshComps.Contains(InMeshComp) && NextGrabStateMap.Contains(InGrabAndHandState))
 	{
 		MeshCompsLastGrabState[InMeshComp] = MeshCompsCurrentGrabState[InMeshComp];
 		MeshCompsCurrentGrabState[InMeshComp] = NextGrabStateMap[InGrabAndHandState];
 	}
-	return MeshCompsCurrentGrabState[InMeshComp];
+	return XhGetGrabMeshCompState(InMeshComp);
 }
 
 EXhGrabState UXhGrabActorCompBase::GetNextGrabeState(FGrabAndHandState InGrabAndHandState)
 {
 	if (NextGrabStateMap.Contains(InGrabAndHandState))
 	{
-		return *NextGrabStateMap.Find(InGrabAndHandState);
+		return NextGrabStateMap[InGrabAndHandState];
 	}
 	return EXhGrabState::Max;
 }

@@ -10,15 +10,28 @@ AXhOperateActorBase::AXhOperateActorBase()
 {
 	bCanOpera = true;
 	GrabActorCompBase = CreateDefaultSubobject<UXhGrabActorCompBase>(TEXT("GrabActorCompBase"));
+	GrabActorCompBase->bAutoActivate = true;
 	bAutoInitGrab = true;
 	GrabComp = nullptr;
 }
 
-void AXhOperateActorBase::XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhGrabStateEvent InGrabStateEvent /*= EXhGrabStateEvent::Max*/, const FName SocketName /*= NAME_None*/, float DelayAttch /*= 0*/)
+void AXhOperateActorBase::XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhHand InHand /*= EXhHand::Max*/, const FName SocketName /*= NAME_None*/, float DelayAttch /*= 0*/)
 {
 	if (GrabComp)
 	{
-		GrabComp->XhGrab(InMeshComp, InAttchParent, InGrabStateEvent, SocketName, DelayAttch);
+		GrabComp->XhGrab(InMeshComp, InAttchParent, InHand, SocketName, DelayAttch);
+	}
+	else
+	{
+		UXhTool::WriteLog(this, TEXT("XhGrab:GrabComp无效！"));
+	}
+}
+
+void AXhOperateActorBase::XhDrop(UStaticMeshComponent* InMeshComp)
+{
+	if (GrabComp)
+	{
+		GrabComp->XhDrop(InMeshComp);
 	}
 	else
 	{
@@ -39,14 +52,14 @@ void AXhOperateActorBase::BeginPlay()
 
 void AXhOperateActorBase::InitGrab()
 {
-	if (bCanOpera && XhCharacter && GrabActorCompBase)
+	if (bCanOpera && XhCharacter && GrabComp)//GrabActorCompBase
 	{
-		GrabActorCompBase->LeftGrabCollisionComps.Add((UPrimitiveComponent*)XhCharacter->GetGrabCollision(EXhHand::L_Hand));
-		GrabActorCompBase->RightGrabCollisionComps.Add((UPrimitiveComponent*)XhCharacter->GetGrabCollision(EXhHand::R_Hand));
+		GrabComp->LeftGrabCollisionComps.Add((UPrimitiveComponent*)XhCharacter->GetGrabCollision(EXhHand::L_Hand));
+		GrabComp->RightGrabCollisionComps.Add((UPrimitiveComponent*)XhCharacter->GetGrabCollision(EXhHand::R_Hand));
 		TArray<UStaticMeshComponent*> OutStaticMeshes;
 		GetComponents(UStaticMeshComponent::StaticClass(), OutStaticMeshes);
-		GrabActorCompBase->XhRegisterGrabMeshComps(OutStaticMeshes);
-		GrabComp = GrabActorCompBase;
+		GrabComp->XhRegisterGrabMeshComps(OutStaticMeshes);
+		//GrabComp = GrabActorCompBase;
 	}
 	else
 	{

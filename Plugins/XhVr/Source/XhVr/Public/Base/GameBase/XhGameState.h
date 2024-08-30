@@ -21,22 +21,24 @@ class XHVR_API AXhGameState : public AGameState
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
 	AXhGameMode* XhGameMode;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
-	AXhCharacter* XhCharacter;
+// 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
+// 	AXhCharacter* XhCharacter;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
 	UXhGameInstance* XhGameInstance;
 
 	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
 	//UXhGameInstance* XhPlayState;
 public:
-	TMap<FString, FTransform> ActorTransform;
-
+	TMap<FString, FTransform> ActorsTransform;
+	int32 XhBeginOrder;
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "GetXhActorTransform"))
 	FTransform GetXhActorTransform(const FString& InName);
 public:
-	void XhNativeInit();
-
+	virtual void XhNativeInit();
+protected:
+	UFUNCTION(BlueprintImplementableEvent, meta = (Keywords = "XhBegin"))
+	void XhBegin();
 protected:
 	/** Overridable native event for when play begins for this actor. */
 	virtual void BeginPlay() override;
