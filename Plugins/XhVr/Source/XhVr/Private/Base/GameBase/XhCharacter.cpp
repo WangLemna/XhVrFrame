@@ -65,8 +65,8 @@ AXhCharacter::AXhCharacter()
 	bUseControllerRotationYaw = false;
 
 
-	WalkHand = EXhHand::L_Hand;
-	TraceHand = EXhHand::L_Hand;
+	WalkHand = EXhHand::Left;
+	TraceHand = EXhHand::Left;
 	KB_Speed = 1.f;
 	ControlObj = EKB_ControlObj::Pawn;
 	//UI_ControlTip = Cast<UUserWidget>(StaticLoadObject(UObject::StaticClass(), nullptr, TEXT("/Game/Path/To/YourAsset.YourAsset")));
@@ -99,12 +99,12 @@ void AXhCharacter::InitWalk()
 	{
 	case EXhHand::None:
 	break;
-	case EXhHand::L_Hand:
+	case EXhHand::Left:
 	{
 		WalkAttach = LeftMotionController;
 	}
 	break;
-	case EXhHand::R_Hand:
+	case EXhHand::Right:
 	{
 		WalkAttach = RightMotionController;
 	}
@@ -137,12 +137,12 @@ void AXhCharacter::InitTrace()
 	{
 	case EXhHand::None:
 	break;
-	case EXhHand::L_Hand:
+	case EXhHand::Left:
 	{
 		TraceAttach = LeftMotionController;
 	}
 	break;
-	case EXhHand::R_Hand:
+	case EXhHand::Right:
 	{
 		TraceAttach = RightMotionController;
 	}
@@ -175,10 +175,10 @@ USphereComponent* AXhCharacter::GetGrabCollision(EXhHand XhHand)
 	{
 	case EXhHand::None:
 		break;
-	case EXhHand::L_Hand:
+	case EXhHand::Left:
 		CollisionComponent = LeftGrabCollision;
 		break;
-	case EXhHand::R_Hand:
+	case EXhHand::Right:
 		CollisionComponent = RightGrabCollision;
 		break;
 	default:

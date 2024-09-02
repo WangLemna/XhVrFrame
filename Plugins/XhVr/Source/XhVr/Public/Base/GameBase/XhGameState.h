@@ -16,8 +16,8 @@ UCLASS()
 class XHVR_API AXhGameState : public AGameState
 {
 	GENERATED_BODY()
-
-
+public:
+	AXhGameState();
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
 	AXhGameMode* XhGameMode;

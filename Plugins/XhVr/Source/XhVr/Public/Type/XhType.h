@@ -62,8 +62,8 @@ UENUM(BlueprintType)
 enum class EXhHand : uint8
 {
 	None UMETA(DisplayName = "无"),
-	L_Hand UMETA(DisplayName = "左手"),
-	R_Hand UMETA(DisplayName = "右手"),
+	Left UMETA(DisplayName = "左手"),
+	Right UMETA(DisplayName = "右手"),
 	Max UMETA(DisplayName = "None"),
 };
 #pragma endregion
@@ -89,7 +89,7 @@ enum class EXhTraceMode : uint8
 
 #pragma region XhGrab
 UENUM(BlueprintType)
-enum class EXhGrabStateEvent : uint8
+enum class EXhGrabEvent : uint8
 {
 	None UMETA(DisplayName = "未发生事件"),
 	E_LeftOverlap_S UMETA(DisplayName = "左手触碰事件开始"),
@@ -104,7 +104,7 @@ enum class EXhGrabStateEvent : uint8
 	Max UMETA(DisplayName = "None"),
 };
 
-static FString EnumToString(EXhGrabStateEvent InValue)
+static FString EnumToString(EXhGrabEvent InValue)
 {
 #if WITH_EDITORONLY_DATA
 	return FString::Printf(TEXT("%s"), *UEnum::GetDisplayValueAsText(InValue).ToString());
@@ -112,37 +112,37 @@ static FString EnumToString(EXhGrabStateEvent InValue)
 	FString Str;
 	switch (InValue)
 	{
-	case EXhGrabStateEvent::None:
+	case EXhGrabEvent::None:
 		Str = TEXT("未发生事件");
 		break;
-	case EXhGrabStateEvent::E_LeftOverlap_S:
+	case EXhGrabEvent::E_LeftOverlap_S:
 		Str = TEXT("左手触碰事件开始");
 		break;
-	case EXhGrabStateEvent::E_LeftOverlap_E:
+	case EXhGrabEvent::E_LeftOverlap_E:
 		Str = TEXT("左手触碰事件结束");
 		break;
-	case EXhGrabStateEvent::E_RightOverlap_S:
+	case EXhGrabEvent::E_RightOverlap_S:
 		Str = TEXT("右手触碰事件开始");
 		break;
-	case EXhGrabStateEvent::E_RightOverlap_E:
+	case EXhGrabEvent::E_RightOverlap_E:
 		Str = TEXT("右手触碰事件结束");
 		break;
-	case EXhGrabStateEvent::E_LeftGrab_S:
+	case EXhGrabEvent::E_LeftGrab_S:
 		Str = TEXT("左手拿起事件开始");
 		break;
-	case EXhGrabStateEvent::E_LeftGrab_E:
+	case EXhGrabEvent::E_LeftGrab_E:
 		Str = TEXT("左手拿起事件结束");
 		break;
-	case EXhGrabStateEvent::E_RightGrab_S:
+	case EXhGrabEvent::E_RightGrab_S:
 		Str = TEXT("右手拿起事件开始");
 		break;
-	case EXhGrabStateEvent::E_RightGrab_E:
+	case EXhGrabEvent::E_RightGrab_E:
 		Str = TEXT("右手拿起事件结束");
 		break;
-	case EXhGrabStateEvent::E_Drop:
+	case EXhGrabEvent::E_Drop:
 		Str = TEXT("扔下事件");
 		break;
-	case EXhGrabStateEvent::Max:
+	case EXhGrabEvent::Max:
 		Str = TEXT("None");
 		break;
 	default:
@@ -217,33 +217,33 @@ static FString EnumToString(EXhGrabState InValue)
 
 
 USTRUCT(BlueprintType)
-struct FGrabAndHandState
+struct FGrabAndGrabEvent
 {
 	GENERATED_USTRUCT_BODY()
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	EXhGrabState GrabState;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	EXhGrabStateEvent HandState;
-	FGrabAndHandState()
+	EXhGrabEvent GrabEvent;
+	FGrabAndGrabEvent()
 		: GrabState(EXhGrabState::None)
-		, HandState(EXhGrabStateEvent::None)
+		, GrabEvent(EXhGrabEvent::None)
 	{
 
 	}
-	FGrabAndHandState(EXhGrabState InXhGrabState, EXhGrabStateEvent InXhHand)
+	FGrabAndGrabEvent(EXhGrabState InXhGrabState, EXhGrabEvent InXhHand)
 		: GrabState(InXhGrabState)
-		, HandState(InXhHand)
+		, GrabEvent(InXhHand)
 	{
 
 	}
-	bool operator==(const FGrabAndHandState B) const
+	bool operator==(const FGrabAndGrabEvent B) const
 	{
-		return GrabState == B.GrabState && HandState == B.HandState;
+		return GrabState == B.GrabState && GrabEvent == B.GrabEvent;
 	}
-	friend inline int32 GetTypeHash(const FGrabAndHandState& Key)
+	friend inline int32 GetTypeHash(const FGrabAndGrabEvent& Key)
 	{
-		return HashCombine((uint32)Key.GrabState, (uint32)Key.HandState);
+		return HashCombine((uint32)Key.GrabState, (uint32)Key.GrabEvent);
 	}
 };
 #pragma endregion
@@ -371,6 +371,139 @@ public:
 		return Description == B.Description && DataActor == B.DataActor;
 	}
 };
+
+
+
+#pragma region OculusEvent
+UENUM(BlueprintType)
+enum class EOculusEvent : uint8
+{
+	None,
+	OculusA,
+	OculusB,
+	OculusX,
+	OculusY,
+	OculusJoystickL,
+	OculusJoystickR,
+	OculusGripL,
+	OculusGripR,
+	OculusTriggerL,
+	OculusTriggerR,
+	Max,
+};
+
+static FString EnumToString(EOculusEvent InValue)
+{
+#if WITH_EDITORONLY_DATA
+	return FString::Printf(TEXT("%s"), *UEnum::GetDisplayValueAsText(InValue).ToString());
+#endif
+	FString Str;
+	switch (InValue)
+	{
+	case EOculusEvent::None:
+		Str = TEXT("None");
+		break;
+	case EOculusEvent::OculusA:
+		Str = TEXT("OculusA");
+		break;
+	case EOculusEvent::OculusB:
+		Str = TEXT("OculusB");
+		break;
+	case EOculusEvent::OculusX:
+		Str = TEXT("OculusX");
+		break;
+	case EOculusEvent::OculusY:
+		Str = TEXT("OculusY");
+		break;
+	case EOculusEvent::OculusJoystickL:
+		Str = TEXT("OculusJoystickL");
+		break;
+	case EOculusEvent::OculusJoystickR:
+		Str = TEXT("OculusJoystickR");
+		break;
+	case EOculusEvent::OculusGripL:
+		Str = TEXT("OculusGripL");
+		break;
+	case EOculusEvent::OculusGripR:
+		Str = TEXT("OculusGripR");
+		break;
+	case EOculusEvent::OculusTriggerL:
+		Str = TEXT("OculusTriggerL");
+		break;
+	case EOculusEvent::OculusTriggerR:
+		Str = TEXT("OculusTriggerR");
+		break;
+	case EOculusEvent::Max:
+		Str = TEXT("Max");
+		break;
+	default:
+		break;
+	}
+	return Str;
+}
+
+//
+USTRUCT(BlueprintType)
+struct FOculusEventMode
+{
+	GENERATED_USTRUCT_BODY()
+
+public:
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EOculusEvent OculusEvent;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	EButtonEvent ButtonEvent;
+	FOculusEventMode()
+		:OculusEvent(EOculusEvent::Max)
+		, ButtonEvent(EButtonEvent::Max)
+	{}
+	FOculusEventMode(EOculusEvent InOculusEvent, EButtonEvent InButtonEvent)
+		:OculusEvent(InOculusEvent)
+		, ButtonEvent(InButtonEvent)
+	{}
+	bool operator==(const FOculusEventMode B) const
+	{
+		return OculusEvent == B.OculusEvent && ButtonEvent == B.ButtonEvent;
+	}
+
+	bool IsValidData() const
+	{
+		return OculusEvent != EOculusEvent::None
+			&& OculusEvent != EOculusEvent::Max
+			&& ButtonEvent != EButtonEvent::None
+			&& ButtonEvent != EButtonEvent::Max;
+	}
+	EXhHand GetHand() const
+	{
+		if (OculusEvent == EOculusEvent::None || ButtonEvent == EButtonEvent::Max)
+		{
+			return EXhHand::Max;
+		}
+		if (OculusEvent == EOculusEvent::OculusX
+			|| OculusEvent == EOculusEvent::OculusY
+			|| OculusEvent == EOculusEvent::OculusJoystickL
+			|| OculusEvent == EOculusEvent::OculusGripL
+			|| OculusEvent == EOculusEvent::OculusTriggerL)
+		{
+			return EXhHand::Left;
+		}
+		if (OculusEvent == EOculusEvent::OculusA
+			|| OculusEvent == EOculusEvent::OculusB
+			|| OculusEvent == EOculusEvent::OculusJoystickR
+			|| OculusEvent == EOculusEvent::OculusGripR
+			|| OculusEvent == EOculusEvent::OculusTriggerR)
+		{
+			return EXhHand::Right;
+		}
+		return EXhHand::Max;
+	}
+	friend inline int32 GetTypeHash(const FOculusEventMode& Key)
+	{
+		return HashCombine((uint32)Key.OculusEvent, (uint32)Key.ButtonEvent);
+	}
+};
+
+#pragma endregion
 // 
 // //XhActorBaseStruct
 // USTRUCT(BlueprintType)

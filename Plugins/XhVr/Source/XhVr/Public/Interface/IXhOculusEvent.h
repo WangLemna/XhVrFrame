@@ -17,7 +17,7 @@ class UXhOculusEvent : public UInterface
 };
 
 /**
- * 
+ * 与FOculusEventMode,AXhOperateActorBase有关联
  */
 //UINTERFACE(BlueprintType, Blueprintable, MinimalAPI)
 class XHVR_API IXhOculusEvent : public IInterface
@@ -27,33 +27,33 @@ class XHVR_API IXhOculusEvent : public IInterface
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
 	//A
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "XhOculusEvent")
 	void OculusA(EButtonEvent InButtonEvent);
 	//B
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "XhOculusEvent")
 	void OculusB(EButtonEvent InButtonEvent);
 	//X
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "XhOculusEvent")
 	void OculusX(EButtonEvent InButtonEvent);
 	//Y
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "XhOculusEvent")
 	void OculusY(EButtonEvent InButtonEvent);
 	//左摇杆
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "XhOculusEvent")
 	void OculusJoystickL(EButtonEvent InButtonEvent);
 	//右摇杆
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "XhOculusEvent")
 	void OculusJoystickR(EButtonEvent InButtonEvent);
 	//左手握
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "XhOculusEvent")
 	void OculusGripL(EButtonEvent InButtonEvent);
 	//右手握
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "XhOculusEvent")
 	void OculusGripR(EButtonEvent InButtonEvent);
 	//左扳机
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "XhOculusEvent")//BlueprintImplementableEvent
 	void OculusTriggerL(EButtonEvent InButtonEvent);
 	//右扳机
-	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable, Category = "XhOculusEvent")
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable, Category = "XhOculusEvent")
 	void OculusTriggerR(EButtonEvent InButtonEvent);
 };

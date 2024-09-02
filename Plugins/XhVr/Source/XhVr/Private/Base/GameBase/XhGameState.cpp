@@ -6,6 +6,11 @@
 //#include "Base/GameBase/XhCharacter.h"
 #include "Kismet/GameplayStatics.h"
 
+AXhGameState::AXhGameState()
+{
+	XhBeginOrder = -1;
+}
+
 FTransform AXhGameState::GetXhActorTransform(const FString& InName)
 {
 	if (ActorsTransform.Contains(InName))
