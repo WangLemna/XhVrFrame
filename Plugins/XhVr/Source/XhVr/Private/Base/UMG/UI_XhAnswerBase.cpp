@@ -39,7 +39,7 @@ void UUI_XhAnswerBase::XhConstructComplete_Implementation()
 					XhButton->ButtonText->SetText(Temp.ButtonText.Content);
 					FSlateFontInfo XhButtonFont = XhButton->ButtonText->GetFont();
 					XhButtonFont.Size = Temp.ButtonText.FontSize;
-					TitleText->SetFont(XhButtonFont);
+					XhButton->ButtonText->SetFont(XhButtonFont);
 					XhButton->Button->ButtonID = Temp.ButtonID;
 					DynamicButtons.Add(XhButton->Button);
 

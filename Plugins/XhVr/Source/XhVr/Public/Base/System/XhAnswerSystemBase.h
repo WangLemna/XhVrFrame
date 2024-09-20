@@ -7,6 +7,7 @@
 #include "UI/XhButton.h"
 #include "Type/XhCore.h"
 #include "Base/Actor/XhDataActorBase.h"
+#include "Base/Actor/XhActorBase.h"
 #include "XhAnswerSystemBase.generated.h"
 
 class AXhAnswerBase;
@@ -34,7 +35,7 @@ struct FQuesionLib
 };
 
 UCLASS()
-class XHVR_API AXhAnswerSystemBase : public AActor
+class XHVR_API AXhAnswerSystemBase : public AXhActorBase
 {
 	GENERATED_BODY()
 	

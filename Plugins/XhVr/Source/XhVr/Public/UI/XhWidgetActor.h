@@ -5,10 +5,11 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "UI/XhButton.h"
+#include "Base/Actor/XhActorBase.h"
 #include "XhWidgetActor.generated.h"
 
 UCLASS()
-class XHVR_API AXhWidgetActor : public AActor
+class XHVR_API AXhWidgetActor : public AXhActorBase
 {
 	GENERATED_BODY()
 	

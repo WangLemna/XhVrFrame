@@ -3,12 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "GameFramework/Actor.h"
 #include "Type/XhCore.h"
+#include "Base/Actor/XhActorBase.h"
 #include "XhDataActorBase.generated.h"
 
 UCLASS()
-class XHVR_API AXhDataActorBase : public AActor
+class XHVR_API AXhDataActorBase : public AXhActorBase
 {
 	GENERATED_BODY()
 	

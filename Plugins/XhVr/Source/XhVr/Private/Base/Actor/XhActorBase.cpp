@@ -52,14 +52,6 @@ FTransform AXhActorBase::GetXhActorTransform(const FString& InName)
 	return FTransform();
 }
 
-void AXhActorBase::XhDestroy()
-{
-	if(IsValid(this))
-	{
-		Destroy();
-	}
-}
-
 void AXhActorBase::ChangeCanOpera(bool InCanOpera)
 {
 	if (bCanOpera == InCanOpera)

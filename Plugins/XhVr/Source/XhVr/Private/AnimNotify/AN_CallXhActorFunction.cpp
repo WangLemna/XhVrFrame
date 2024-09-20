@@ -12,12 +12,19 @@ void UAN_CallXhActorFunction::Notify(USkeletalMeshComponent* MeshComp, UAnimSequ
 void UAN_CallXhActorFunction::Notify(USkeletalMeshComponent* MeshComp, UAnimSequenceBase* Animation, const FAnimNotifyEventReference& EventReference)
 {
 	Super::Notify(MeshComp, Animation, EventReference);
-	AXhCharacter* XhPlayer = Cast<AXhCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
-	AXhPlayerState* XhPlayerState = Cast<AXhPlayerState>(XhPlayer->GetPlayerState());
-	FString XhClassName = MyActor->GetClass()->GetName().LeftChop(2);
-	TArray<AXhActorBase*> FunctionActors = XhPlayerState->GetXhActors(Id, XhClassName, TagName);
-	for (AXhActorBase* Temp : FunctionActors)
+	if (APlayerController* PC = UGameplayStatics::GetPlayerController(MeshComp->GetWorld(), 0))
 	{
-		UKismetSystemLibrary::K2_SetTimerForNextTick(Temp, FunctionName);
+		if (AXhCharacter* XhPlayer = Cast<AXhCharacter>(PC->K2_GetPawn()))
+		{
+			if (AXhPlayerState* XhPlayerState = Cast<AXhPlayerState>(XhPlayer->GetPlayerState()))
+			{
+				FString XhClassName = MyActor->GetClass()->GetName().LeftChop(2);
+				TArray<AXhActorBase*> FunctionActors = XhPlayerState->GetXhActors(Id, XhClassName, TagName);
+				for (AXhActorBase* Temp : FunctionActors)
+				{
+					UKismetSystemLibrary::K2_SetTimerForNextTick(Temp, FunctionName);
+				}
+			}
+		}
 	}
 }

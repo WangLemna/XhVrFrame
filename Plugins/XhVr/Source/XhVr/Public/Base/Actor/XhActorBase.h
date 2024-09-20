@@ -66,10 +66,6 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "GetXhActorTransform"))
 	FTransform GetXhActorTransform(const FString& InName);
 
-	//销毁
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "XhDestroy"))
-	void XhDestroy();
-
 	//改变操作状态
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "ChangeCanOpera"))
 	void ChangeCanOpera(bool InCanOpera);

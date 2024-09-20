@@ -5,17 +5,14 @@
 
 void AXhAnimActorBase::CreateSkeletalMeshComps_Implementation()
 {
-	if (AnimData.IsValidData())
+	int32 Length = AnimData.SkeletalMeshes.Num();
+	for (int32 i = 0; i < Length; i++)
 	{
-		int32 Length = AnimData.SkeletalMeshes.Num();
-		for (int32 i = 0; i < Length; i++)
-		{
-			USkeletalMeshComponent* SK_Comp = Cast<USkeletalMeshComponent>(AddComponentByClass(USkeletalMeshComponent::StaticClass(), false, FTransform(), false));
-			SK_Comp->SetSkinnedAssetAndUpdate(AnimData.SkeletalMeshes[i]);
-			SK_Comp->SetAnimationMode(EAnimationMode::AnimationSingleNode);
-			SK_Comp->SetAnimation(AnimData.Anims[i]);
-			SK_Comps.Add(SK_Comp);
-		}
+		USkeletalMeshComponent* SK_Comp = Cast<USkeletalMeshComponent>(AddComponentByClass(USkeletalMeshComponent::StaticClass(), false, FTransform(), false));
+		SK_Comp->SetSkinnedAssetAndUpdate(AnimData.SkeletalMeshes[i]);
+		SK_Comp->SetAnimationMode(EAnimationMode::AnimationSingleNode);
+		SK_Comp->SetAnimation(AnimData.Anims[i]);
+		SK_Comps.Add(SK_Comp);
 	}
 }
 

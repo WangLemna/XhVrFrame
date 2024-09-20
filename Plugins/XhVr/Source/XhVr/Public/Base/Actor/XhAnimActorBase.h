@@ -13,8 +13,6 @@ struct FAnimData
 
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<AXhAnimActorBase> AnimActorClass;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FTransform SpawnTransform;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TArray<USkeletalMesh*> SkeletalMeshes;
@@ -23,20 +21,12 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FTransform PlayerTransform;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
-	TSubclassOf<AXhActorBase> NextStepClass;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	FDAB_Struct ExtraData;
 	FAnimData()
-		: AnimActorClass(nullptr)
-		, SpawnTransform(FTransform())
+		: SpawnTransform(FTransform())
 		, PlayerTransform(FTransform())
-		, NextStepClass(nullptr)
 		, ExtraData(FDAB_Struct())
 	{}
-	bool IsValidData()
-	{
-		return AnimActorClass != nullptr;
-	}
 };
 /**
  * 
