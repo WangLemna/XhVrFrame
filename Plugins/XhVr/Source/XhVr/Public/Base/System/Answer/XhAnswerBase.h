@@ -50,9 +50,9 @@ public:
 	void XhRegisterComplete();
 	UFUNCTION(BlueprintCallable)//BlueprintNativeEvent
 	void XhNativeClicked(const FString& ButtonID, UXhButton* Button, const FString& SubmitBtnID);
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void CreateTip();
-	UFUNCTION(BlueprintNativeEvent)
+	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void CreateNextQuestion();
 protected:
 	// Called when the game starts or when spawned

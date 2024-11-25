@@ -149,7 +149,7 @@ public:
 #pragma endregion
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "WriteLog", WorldContext = "WorldContextObject"), Category = "XhTool|XhLog")
 	static void WriteLog(const UObject* WorldContextObject, const FString& InStringLog, bool bScreen = true);
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "PrintLog"), Category = "XhTool|XhLog")
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "XhLog"), Category = "XhTool|XhLog")
 	static void PrintLog(const FString& InStringLog);
 };
 

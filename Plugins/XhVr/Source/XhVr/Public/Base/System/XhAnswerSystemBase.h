@@ -61,8 +61,6 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 public:
-	UFUNCTION(BlueprintImplementableEvent)
-	void XhBegin();
 	UFUNCTION(BlueprintNativeEvent, BlueprintCallable)
 	void NextQuestion();
 	UFUNCTION(BlueprintCallable)

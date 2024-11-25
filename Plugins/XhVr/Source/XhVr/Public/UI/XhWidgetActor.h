@@ -38,8 +38,6 @@ public:
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	UFUNCTION(BlueprintImplementableEvent)
-	void XhBegin();
 
 public:	
 	// Called every frame

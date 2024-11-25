@@ -21,15 +21,11 @@ public:
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
 	AXhGameMode* XhGameMode;
-// 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
-// 	AXhCharacter* XhCharacter;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
-	UXhGameInstance* XhGameInstance;
-
-	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
-	//UXhGameInstance* XhPlayState;
-public:
 	TMap<FString, FTransform> ActorsTransform;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Debug")
+	bool bDebug;
+public:
 	int32 XhBeginOrder;
 public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "GetXhActorTransform"))

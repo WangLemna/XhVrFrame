@@ -7,7 +7,6 @@
 #include "Type/XhCore.h"
 #include "XhActorBase.generated.h"
 
-class UXhGrabActorCompBase;
 class AXhGameState;
 class AXhPlayerController;
 class AXhPlayerState;
@@ -27,13 +26,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "XhVar|Base")
 	FString XhClassName;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|BlueprintChange")
-	AXhGameState* XhGameState;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|BlueprintChange")
-	AXhPlayerController* XhPlayerController;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|BlueprintChange")
 	AXhPlayerState* XhPlayerState;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|BlueprintChange")
-	AXhCharacter* XhCharacter;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Setting", meta = (ExposeOnSpawn = "true"))
 	FString XhActorId;
 
@@ -62,14 +55,12 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "GetXhActorsByClassName"))
 	TArray<AXhActorBase*> GetXhActorsByClassName(const FString& InClassName);
 
-	//获取Actor的Transfrom，配置在XhGameMode中的DT_ActorTransform
-	UFUNCTION(BlueprintCallable, BlueprintPure, meta = (Keywords = "GetXhActorTransform"))
-	FTransform GetXhActorTransform(const FString& InName);
-
 	//改变操作状态
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "ChangeCanOpera"))
 	void ChangeCanOpera(bool InCanOpera);
-
+	
+	UFUNCTION(BlueprintImplementableEvent, BlueprintCallable)
+	void XhDebug();
 protected:
 	UFUNCTION(BlueprintImplementableEvent, meta = (Keywords = "XhBegin"))
 	void XhBegin();

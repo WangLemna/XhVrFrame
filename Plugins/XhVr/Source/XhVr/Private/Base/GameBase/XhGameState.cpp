@@ -32,11 +32,6 @@ void AXhGameState::XhNativeInit()
 			ActorsTransform.Add(Temp->Name, Temp->Transform);
 		}
 	}
-// 	if (APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0))
-// 	{
-// 		XhCharacter = Cast<AXhCharacter>(PC->GetPawn());
-// 	}
-	XhGameInstance = Cast<UXhGameInstance>(GetWorld()->GetGameInstance());
 }
 
 void AXhGameState::BeginPlay()

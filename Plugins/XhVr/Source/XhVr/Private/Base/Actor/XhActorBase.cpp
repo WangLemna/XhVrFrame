@@ -2,7 +2,6 @@
 
 
 #include "Base/Actor/XhActorBase.h"
-#include "Base/Grab/XhGrabActorCompBase.h"
 #include "Base/GameBase/XhGameState.h"
 #include "Base/GameBase/XhPlayerController.h"
 #include "Base/GameBase/XhPlayerState.h"
@@ -43,15 +42,6 @@ TArray<AXhActorBase*> AXhActorBase::GetXhActorsByClassName(const FString& InClas
 	return Results;
 }
 
-FTransform AXhActorBase::GetXhActorTransform(const FString& InName)
-{
-	if (XhGameState)
-	{
-		return XhGameState->GetXhActorTransform(InName);
-	}
-	return FTransform();
-}
-
 void AXhActorBase::ChangeCanOpera(bool InCanOpera)
 {
 	if (bCanOpera == InCanOpera)
@@ -85,51 +75,25 @@ void AXhActorBase::XhNativeInit()
 	XhClassName = GetClass()->GetName().LeftChop(2);//xxxx_C -> xxxx
 	if (UWorld* World = GetWorld())
 	{
-		XhGameState = Cast<AXhGameState>(UGameplayStatics::GetGameState(World));
-		XhPlayerController = Cast<AXhPlayerController>(UGameplayStatics::GetPlayerController(World, 0));
-		if (XhPlayerController)
+		if (XhPlayerState)
 		{
-			XhCharacter = XhPlayerController->GetPawn<AXhCharacter>();
-			if (XhCharacter)
+			if (XhActorId != TEXT_EMPTY)
 			{
-				XhPlayerState = XhCharacter->GetPlayerState<AXhPlayerState>();
-				if (XhPlayerState)
-				{
-					if (XhActorId != TEXT_EMPTY)
-					{
-						XhPlayerState->XhActorsDataById.Add(XhActorId, this);
-					}
-					if (XhPlayerState->XhActorsData.Contains(XhClassName))
-					{
-						XhPlayerState->XhActorsData.Find(XhClassName)->XhActorBaseArray.AddUnique(this);
-					}
-					else
-					{
-						XhPlayerState->XhActorsData.Add(XhClassName, FXhActorBaseArray({ this }));
-					}
-					if (bCanOpera)
-					{
-						XhPlayerState->XhOperaActors.AddUnique(this);
-					}
-				}
+				XhPlayerState->XhActorsDataById.Add(XhActorId, this);
+			}
+			if (XhPlayerState->XhActorsData.Contains(XhClassName))
+			{
+				XhPlayerState->XhActorsData.Find(XhClassName)->XhActorBaseArray.AddUnique(this);
+			}
+			else
+			{
+				XhPlayerState->XhActorsData.Add(XhClassName, FXhActorBaseArray({ this }));
+			}
+			if (bCanOpera)
+			{
+				XhPlayerState->XhOperaActors.AddUnique(this);
 			}
 		}
-	}
-	if (!XhGameState) 
-	{
-		UXhTool::WriteLog(this, TEXT("XhNativeInit:XhGameState获取失败！"));
-	}
-	if (!XhPlayerController)
-	{
-		UXhTool::WriteLog(this, TEXT("XhNativeInit:XhPlayerController获取失败！"));
-	}
-	if (!XhCharacter)
-	{
-		UXhTool::WriteLog(this, TEXT("XhNativeInit:XhCharacter获取失败！"));
-	}
-	if (!XhPlayerState)
-	{
-		UXhTool::WriteLog(this, TEXT("XhNativeInit:XhPlayerState获取失败！"));
 	}
 
 }

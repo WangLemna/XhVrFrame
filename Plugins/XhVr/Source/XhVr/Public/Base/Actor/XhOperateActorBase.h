@@ -7,9 +7,6 @@
 #include "Base/Actor/XhActorBase.h"
 #include "XhOperateActorBase.generated.h"
 
-class UXhGrabActorCompBase;
-class UXhGrabMeshComponent;
-
 /**
  * 
  */
@@ -23,8 +20,11 @@ public:
 public:
 	//XhRegisterGrabMeshComps()
 	//LeftGrabCollisionComps  RightGrabCollisionComps
-	UPROPERTY(VisibleAnywhere, BlueprintReadWrite)
-	TObjectPtr<UXhGrabActorCompBase> GrabActorCompBase;
+	// 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Base")
+	int32 Process;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "XhVar|Debug")
+	TArray<FOculusEventMode> DebugOperaEvent;
 	//~ Begin IXhOculusEvent Interface.
 public:
 	void OculusA_Implementation(EButtonEvent InButtonEvent);
@@ -38,32 +38,10 @@ public:
 	void OculusTriggerL_Implementation(EButtonEvent InButtonEvent);
 	void OculusTriggerR_Implementation(EButtonEvent InButtonEvent);
 	//~ End IXhOculusEvent Interface.
-protected:
-	UXhGrabActorCompBase* GrabComp;
-	TMap<FOculusEventMode, TArray<UXhGrabMeshComponent*>> XhGrabMeshCompEventMap;
-	//TArray<UXhGrabMeshComponent*> XhGrabMeshCompArray;
-public:
-	//注册GrabMeshComponent
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "XhNativeRegisterGrabMeshComps"), Category = "Xh")
-	void XhRegisterGrabMeshComps(TArray<UStaticMeshComponent*> InXhGrabMeshComps);
-	//注册GrabMeshComponent
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "XhNativeRegisterGrabMeshComp"), Category = "Xh")
-	void XhRegisterGrabMeshComp(UXhGrabMeshComponent* InXhGrabMeshComp);
-	//抓取
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "XhGrab"), Category = "Xh")
-	void XhGrab(UStaticMeshComponent* InMeshComp, USceneComponent* InAttchParent, EXhHand InHand = EXhHand::Max, const FName SocketName = NAME_None, float DelayAttch = 0);
 
-	//扔下
-	UFUNCTION(BlueprintCallable, meta = (Keywords = "XhDrop"), Category = "Xh")
-	void XhDrop(UStaticMeshComponent* InMeshComp);
-
-public:
-	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "XhVar|Settings")
-	bool bAutoInitGrab;
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
-	void InitGrab();
 	virtual void XhNativeInit() override;
 public:
 	// Called every frame
