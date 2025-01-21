@@ -312,3 +312,46 @@ void UXhTool::PrintLog(const FString& InStringLog)
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, InStringLog);
 }
 
+void UXhTool::LoadTxtConfig(const FString& ConfigPath, TMap<FString, FConfigData>& Result)
+{
+	TArray<FString> Content;
+	if (FPaths::FileExists(ConfigPath))
+	{
+		FFileHelper::LoadFileToStringArray(Content, *ConfigPath);
+	}
+	FConfigData Data;
+	FString Category = "Config";
+		
+	for (auto& Line : Content)
+	{
+		if (Line.Len() == 0)
+		{
+			continue;
+		}
+		if (Line.StartsWith("//") || Line.StartsWith("#"))
+		{
+			continue;
+		}
+		if (Line.StartsWith("[") && Line.EndsWith("]"))
+		{
+			if (Data.IsValidData())
+			{
+				Result.Add(Category, Data);
+			}
+			Data = FConfigData();
+			Category = Line.RightChop(1).LeftChop(1);
+			continue;
+		}
+		FString Key;
+		FString Value;
+		if (Line.Split("=", &Key, &Value))
+		{
+			Data.ConfigData.Add(Key, Value);
+		}
+	}
+	if (Data.IsValidData())
+	{
+		Result.Add(Category, Data);
+	}
+}
+

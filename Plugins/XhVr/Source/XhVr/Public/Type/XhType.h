@@ -46,6 +46,20 @@ enum class FileMode : uint8
 	StringArray
 };
 
+USTRUCT(BlueprintType)
+struct FConfigData
+{
+	GENERATED_USTRUCT_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TMap<FString, FString> ConfigData;
+	FConfigData()
+	{}
+	bool IsValidData() const
+	{
+		 return ConfigData.Num() > 0;
+	}
+};
+
 #pragma endregion
 
 #pragma region XhCharater

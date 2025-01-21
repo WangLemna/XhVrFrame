@@ -151,6 +151,9 @@ public:
 	static void WriteLog(const UObject* WorldContextObject, const FString& InStringLog, bool bScreen = true);
 	UFUNCTION(BlueprintCallable, meta = (Keywords = "XhLog"), Category = "XhTool|XhLog")
 	static void PrintLog(const FString& InStringLog);
+
+	UFUNCTION(BlueprintCallable, meta = (Keywords = "LoadTxtConfig"), Category = "XhTool|Config")
+	static void LoadTxtConfig(const FString& ConfigPath, TMap<FString, FConfigData>& Result);
 };
 
 
